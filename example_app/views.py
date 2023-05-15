@@ -18,6 +18,7 @@ cur = conn.cursor()
 def index(request):
     return render(request, 'index.html')
 
+#test
 def ex_query(request):
     cur.execute('select * from test')
     res = cur.fetchall()
