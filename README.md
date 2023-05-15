@@ -1,3 +1,6 @@
+# Deployed Railway App Link
+[App_Link](https://tk4-e10-production.up.railway.app/)
+
 # Template Proyek Django PBP
 
 Pemrograman Berbasis Platform (CSGE602022) - diselenggarakan oleh Fakultas Ilmu Komputer Universitas Indonesia, Semester Ganjil 2022/2023
