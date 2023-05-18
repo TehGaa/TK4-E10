@@ -1,10 +1,10 @@
 from django.shortcuts import render
 import psycopg2
 import psycopg2.extras
-from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseBadRequest, HttpResponseRedirect
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
-import json
+from django.urls import reverse
 import uuid
 
 
@@ -18,6 +18,10 @@ conn = psycopg2.connect(database=settings.DATABASE_NAME,
                         )
 
 cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
+#TODO: AYOK TRIAS BIKIN FE
+def dashboard(request):
+    return HttpResponse("hello world")
 
 @csrf_exempt
 def register(request):
@@ -38,6 +42,8 @@ def register(request):
         response.content = "Register Success"
 
         try:
+            psycopg2.extras.register_uuid()
+
             uuid_for_new_non_pemain = generate_uuid()
 
             cur.execute("INSERT INTO USER_SYSTEM VALUES(%s, %s)", [username, raw_password,])
@@ -82,7 +88,9 @@ def login(request):
 
 @csrf_exempt
 def logout(request):
-    pass
+    response = HttpResponseRedirect(reverse('putih:dashboard'))
+    response.delete_cookie('role')
+    return response
 
 def check_user_based_on_role(username, password, role):
     query = "SELECT * FROM USER_SYSTEM NATURAL JOIN %s WHERE username = '%s' AND password = '%s'"\
@@ -93,7 +101,6 @@ def check_user_based_on_role(username, password, role):
     return get_user_from_database
 
 def create_user_based_on_role(username, generated_uuid, role, jabatan=None):
-    psycopg2.extras.register_uuid()
 
     query = f"INSERT INTO {str(role).upper()}"
     if (str(role).upper() == "PANITIA"):
@@ -103,7 +110,6 @@ def create_user_based_on_role(username, generated_uuid, role, jabatan=None):
     conn.commit()
 
 def generate_uuid():
-    psycopg2.extras.register_uuid()
 
     while (True):
         generated_uuid = uuid.uuid4()
