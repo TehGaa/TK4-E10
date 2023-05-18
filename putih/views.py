@@ -30,22 +30,29 @@ def register(request):
         username = request.POST.get("username")
         raw_password = request.POST.get("password")
         role = request.POST.get('role')
+        jabatan = request.POST.get('jabatan')
+
 
         response = HttpResponse()
         response.status_code = 200
         response.content = "Register Success"
 
-        check_user_exists_as_manajer = check_username_exists_as_manajer(username)
-        check_user_exists_as_penonton = check_username_exists_as_penonton(username)
-        check_user_exists_as_panitia = check_username_exists_as_panitia(username)
+        try:
+            uuid_for_new_non_pemain = generate_uuid()
 
-        if (check_user_exists_as_manajer or
-            check_user_exists_as_penonton or
-            check_user_exists_as_panitia):
-            return HttpResponseBadRequest("User already exist")
-        else:
-            # create_user_based_on_role(username, raw_password, role)
+            cur.execute("INSERT INTO USER_SYSTEM VALUES(%s, %s)", [username, raw_password,])
+            cur.execute("INSERT INTO NON_PEMAIN VALUES(%s, %s, %s, %s, %s, %s)",
+                        [uuid_for_new_non_pemain, nama_depan, nama_belakang, nomor_hp, email, alamat])
+            create_user_based_on_role(username,
+                                      uuid_for_new_non_pemain,
+                                      role,
+                                      jabatan)
+            conn.commit()
             return response
+        
+        except Exception as e:
+            conn.rollback()
+            return HttpResponseBadRequest(e)
         
     return HttpResponseNotAllowed("Invalid request method. Please use supported request method.")
 
@@ -60,11 +67,11 @@ def login(request):
         response.set_cookie("username", username, expires=None)
         response.content = "Login Success"
 
-        if (check_user_is_manajer(username, raw_password) != []):
+        if (check_user_based_on_role(username, raw_password, "MANAJER") != []):
             response.set_cookie("role", "manajer", expires=None)
-        elif (check_user_is_penonton(username, raw_password) != []):
+        elif (check_user_based_on_role(username, raw_password, "PENONTON") != []):
             response.set_cookie("role", "penonton", expires=None)
-        elif (check_user_is_panitia(username, raw_password) != []):
+        elif (check_user_based_on_role(username, raw_password, "PANITIA") != []):
             response.set_cookie("role", "panitia", expires=None)
         else:
             return HttpResponseBadRequest("Invalid credentials")
@@ -77,77 +84,33 @@ def login(request):
 def logout(request):
     pass
 
-
-def check_user_is_manajer(username, password):
-    query = "SELECT * FROM USER_SYSTEM NATURAL JOIN MANAJER WHERE username = '" + username + "'"+\
-            " AND password = '" + password + "'"
+def check_user_based_on_role(username, password, role):
+    query = "SELECT * FROM USER_SYSTEM NATURAL JOIN %s WHERE username = '%s' AND password = '%s'"\
+            .format(role, username, password)
     cur.execute(query)
-    get_manajer_from_database = cur.fetchall()
-    json_format(get_manajer_from_database)
-    return get_manajer_from_database
+    get_user_from_database = cur.fetchall()
+    json_format(get_user_from_database)
+    return get_user_from_database
 
-def check_user_is_penonton(username, password):
-    query = "SELECT * FROM USER_SYSTEM NATURAL JOIN PENONTON WHERE username = '" + username + "'"+\
-            " AND password = '" + password + "'"
-    cur.execute(query)
-    get_penonton_from_database = cur.fetchall()
-    json_format(get_penonton_from_database)
-    return get_penonton_from_database
+def create_user_based_on_role(username, generated_uuid, role, jabatan=None):
+    psycopg2.extras.register_uuid()
 
-def check_user_is_panitia(username, password):
-    query = "SELECT * FROM USER_SYSTEM NATURAL JOIN PANITIA WHERE username = '" + username + "'"+\
-            " AND password = '" + password + "'"
-    cur.execute(query)
-    get_panitia_from_database = cur.fetchall()
-    json_format(get_panitia_from_database)
-    return get_panitia_from_database
-
-def check_username_exists_as_manajer(username):
-    query = "SELECT * FROM USER_SYSTEM NATURAL JOIN MANAJER WHERE username = '" + username + "'"
-    cur.execute(query)
-    get_manajer_from_database = cur.fetchall()
-    json_format(get_manajer_from_database)
-    return get_manajer_from_database != []
-
-def check_username_exists_as_penonton(username):
-    query = "SELECT * FROM USER_SYSTEM NATURAL JOIN PENONTON WHERE username = '" + username + "'"
-    cur.execute(query)
-    get_penonton_from_database = cur.fetchall()
-    json_format(get_penonton_from_database)
-    return get_penonton_from_database != []
-
-def check_username_exists_as_panitia(username):
-    query = "SELECT * FROM USER_SYSTEM NATURAL JOIN PANITIA WHERE username = '" + username + "'"
-    cur.execute(query)
-    get_panitia_from_database = cur.fetchall()
-    json_format(get_panitia_from_database)
-    return get_panitia_from_database != []
-
-#MASIH ERROR
-def create_user_based_on_role(username, password, role):
-    uuid_for_user = generate_uuid(role)
-
-    query_insert_user_system = "INSERT INTO USER_SYSTEM VALUES('" + username + "', '" + password +"')"
-    cur.execute(query_insert_user_system)
+    query = f"INSERT INTO {str(role).upper()}"
+    if (str(role).upper() == "PANITIA"):
+        cur.execute(query+" VALUES(%s, %s, %s)", [generated_uuid, jabatan, username,])
+    else:
+        cur.execute(query+" VALUES(%s, %s)", [generated_uuid, username,])
     conn.commit()
 
-    query_insert_user_role_based = "INSERT INTO " + str(role).upper() + " VALUES('" + uuid_for_user + "', '" + username +"')"
-    cur.execute(query_insert_user_role_based)
-    conn.commit()
+def generate_uuid():
+    psycopg2.extras.register_uuid()
 
-def generate_uuid(role):
     while (True):
-        generated_uuid = str(uuid.uuid4())
-        query_get_all_non_pemain = "SELECT * FROM NON_PEMAIN WHERE id_"+ role +" = '" + generated_uuid + "'"
-        cur.execute(query_get_all_non_pemain)
+        generated_uuid = uuid.uuid4()
+        cur.execute("SELECT * FROM NON_PEMAIN WHERE id = %s", (generated_uuid,))
         lst_non_pemain = cur.fetchall()
         if (lst_non_pemain == []):
-
             return generated_uuid
-
-
-def generate_uuid_for_penonton():
-    pass
 
 def json_format(lst):
     for i in range(len(lst)):
