@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>Form Registrasi</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<style>
+    /* CSS styles */
+    
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    background-image: url(https://a-static.besthdwallpaper.com/fifa-23-football-arena-wallpaper-3440x1440-102008_15.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    }
+
+    .container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    text-align: center;
+    }
+
+    label {
+    display: inline-block;
+    font-size: 12px;
+    margin-bottom: 10px;
+    }
+
+    input[type="text"] {
+    width: 50%;
+    padding: 5px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    }
+
+    input[type="submit"] {
+    background-color: #1DA1F2;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    }
+</style>
+
+<script>
+    var urlToHome = "{% url 'hijau:home' %}"
+    $(document).ready(function(){
+        $("#submit").click(function(){
+            $.ajax({
+                url: urlToHome,
+                type: "POST",
+                dataType: "json",
+                headers: {
+                    "X-CSRFToken": "{{csrf_token}}"
+                },
+                data: {
+                    "nama-tim": $("#nama-tim").val(),
+                    "nama-univ": $("#nama-univ").val(),
+                },
+                success: function(data){
+                    alert(data)
+                }
+            })
+        })
+    })
+</script>
+{% endblock meta %}
+
+{% block content %}
+<div class="container">
+    <h3>FORM REGISTRASI</h3>
+    <div class="new">
+        <label for="nama-tim">Nama Tim:</label>
+        <input type="text" id="nama-tim" name="nama-tim">
+    </div>
+
+    <label for="nama-univ">Nama Universitas:</label>
+    <input type="text" id="nama-univ" name="nama-univ">
+
+    <button class="btn btn-primary" value="Daftar" id="submit">Submit</button>
+</div>
+{% endblock content %}

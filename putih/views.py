@@ -6,6 +6,7 @@ from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 import uuid
+from putih.decorators.not_logged_in_decorators import not_login_required
 
 
 # Create your views here.
@@ -63,6 +64,7 @@ def register(request):
     return HttpResponseNotAllowed("Invalid request method. Please use supported request method.")
 
 @csrf_exempt
+@not_login_required
 def login(request):
     if (request.method == "POST"):
         username = request.POST.get("username")
@@ -73,11 +75,18 @@ def login(request):
         response.set_cookie("username", username, expires=None)
         response.content = "Login Success"
 
-        if (check_user_based_on_role(username, raw_password, "MANAJER") != []):
+        user_as_manajer = check_user_based_on_role(username, raw_password, "MANAJER")
+        user_as_penonton = check_user_based_on_role(username, raw_password, "PENONTON")
+        user_as_panitia = check_user_based_on_role(username, raw_password, "PANITIA")
+
+        if (user_as_manajer != []):
+            response.set_cookie("id_role", user_as_manajer[0]["id_manajer"])
             response.set_cookie("role", "manajer", expires=None)
-        elif (check_user_based_on_role(username, raw_password, "PENONTON") != []):
+        elif (user_as_penonton != []):
+            response.set_cookie("id_role", user_as_manajer[0]["id_penonton"])
             response.set_cookie("role", "penonton", expires=None)
-        elif (check_user_based_on_role(username, raw_password, "PANITIA") != []):
+        elif (user_as_panitia != []):
+            response.set_cookie("id_role", user_as_manajer[0]["id_panitia"])
             response.set_cookie("role", "panitia", expires=None)
         else:
             return HttpResponseBadRequest("Invalid credentials")
@@ -89,12 +98,13 @@ def login(request):
 @csrf_exempt
 def logout(request):
     response = HttpResponseRedirect(reverse('putih:dashboard'))
+    response.delete_cookie('username')
     response.delete_cookie('role')
+    response.delete_cookie('id_role')
     return response
 
 def check_user_based_on_role(username, password, role):
-    query = "SELECT * FROM USER_SYSTEM NATURAL JOIN %s WHERE username = '%s' AND password = '%s'"\
-            .format(role, username, password)
+    query = f"SELECT * FROM USER_SYSTEM NATURAL JOIN {role} WHERE username = '{username}' AND password = '{password}'"
     cur.execute(query)
     get_user_from_database = cur.fetchall()
     json_format(get_user_from_database)
