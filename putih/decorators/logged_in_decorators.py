@@ -22,4 +22,5 @@ def login_required_as_role(role):
                 return func(*args, **kwargs)
             else:
                 return HttpResponseBadRequest("Unauthorized role")
+        return next_wrapper
     return wrapper
