@@ -22,7 +22,8 @@ cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 #TODO: AYOK TRIAS BIKIN FE
 def dashboard(request):
-    return HttpResponse("hello world")
+    context = {}
+    return render(request, "open.html", context)
 
 @csrf_exempt
 def register(request):
@@ -92,8 +93,10 @@ def login(request):
             return HttpResponseBadRequest("Invalid credentials")
         
         return response
+    
+    context = {}
         
-    return HttpResponseNotAllowed("Invalid request method. Please use supported request method.")
+    return render(request, 'login.html', context)
 
 @csrf_exempt
 def logout(request):
