@@ -31,6 +31,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
+LOGIN_REDIRECT_URL = '/putih/dashboard'
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -42,6 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'example_app',
     'krem',
+    'putih',
+    'hijau',
 ]
 
 MIDDLEWARE = [

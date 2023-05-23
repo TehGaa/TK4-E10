@@ -1,0 +1,342 @@
+{% extends 'base.html' %} {% block meta %}
+<title>Login and Register Page</title>
+{% endblock meta %}
+
+{% block content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", async () => {
+
+        const loginForm = document.getElementById('login-form')
+        const registerManajer = document.getElementById('login-form')
+        const registerPanitia = document.getElementById('login-form')
+        const registerPenonton = document.getElementById('login-form')
+        
+
+        const loginPill = document.getElementById('pills-login-tab')
+        const registerPill = document.getElementById('pills-register-tab')
+        const pillRoleContent = document.getElementById('pills-roleContent')
+
+        if(loginPill.ariaSelected='true') {
+            pillRoleContent.style.display = 'none'
+            console.log('masuk if')
+        }
+
+        loginPill.addEventListener('click', function() {
+            pillRoleContent.style.display = 'none'
+            console.log('klik login tab')
+        })
+
+        registerPill.addEventListener('click', function() {
+            pillRoleContent.style.display = 'block'
+            console.log('klik register tab')
+
+        })
+
+
+
+        // loginForm.addEventListener('submit', async(event)=> {
+        //     event.preventDefault()
+
+        //     console.log("loginnn")
+
+        //     const formData = {
+        //         username: document.getElementById("inputUsername3").value,
+        //         password: document.getElementById("inputPassword3").value,
+        //     };
+            
+        //     var formDataobj = new FormData()
+        //     formDataobj.append('username', formData['username'])
+        //     formDataobj.append('password', formData['password'])
+
+
+        //     const response = await fetch("{% url 'putih:login' %}", {
+        //         method: 'POST',
+        //         body: formDataobj,
+        //     })
+
+        //     const data = await response.text()
+
+            
+
+
+        //     console.log("LOGINNNNN")
+
+        //     console.log('dah reload')
+
+
+
+            
+        // })
+    })
+
+</script>
+
+<ul class="nav nav-pills flex-md-row gap-5 px-5 py-3 nav-justified" id="pills-tab" role="tablist">
+  <li class="flex-md-fill nav-item justify-content-center" role="presentation">
+    <button class="nav-link active" id="pills-login-tab" data-bs-toggle="pill" data-bs-target="#pills-login" type="button" role="tab" aria-controls="pills-login" aria-selected="true">LOGIN</button>
+  </li>
+  <li class="flex-md-fill nav-item justify-content-center" role="presentation">
+    <button class="nav-link " id="pills-register-tab" data-bs-toggle="pill" data-bs-target="#pills-register" type="button" role="tab" aria-controls="pills-register" aria-selected="false">REGISTER</button>
+  </li>
+</ul>
+<div class="flex-column tab-content px-5" id="pills-tabContent">
+  <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="pills-login-tab" tabindex="0">
+    <form method="POST" id="login-form" action="login.php">
+        {% csrf_token %}
+        <div class="row mb-3">
+          <label for="inputUsername3" class="col-sm-2 col-form-label">Username</label>
+          <div class="col-sm-10">
+            <input type="username" name="username" class="form-control" id="inputUsername3" required>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
+          <div class="col-sm-10">
+            <input type="password" name="password" class="form-control" id="inputPassword3" required>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Sign in</button>
+      </form>
+  </div>
+  
+  <div class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="pills-register-tab" tabindex="0">
+    PILIH ROLE KAMU
+    <ul class="nav nav-pills flex-column flex-sm-row gap-5 py-3 nav-justified" id="pills-role">
+        <li class="flex-md-fill nav-item justify-content-center" role="presentation">
+            <button class="nav-link active" id="pills-manajer-tab" data-bs-toggle="pill" data-bs-target="#pills-manajer" type="button" role="tab" aria-controls="pills-manajer" aria-selected="true">MANAJER</button>
+          </li>
+          <li class="flex-md-fill nav-item justify-content-center" role="presentation">
+            <button class="nav-link " id="pills-panitia-tab" data-bs-toggle="pill" data-bs-target="#pills-panitia" type="button" role="tab" aria-controls="pills-panitia" aria-selected="false">PANITIA</button>
+          </li>
+          <li class="flex-md-fill nav-item justify-content-center" role="presentation">
+            <button class="nav-link " id="pills-penonton-tab" data-bs-toggle="pill" data-bs-target="#pills-penonton" type="button" role="tab" aria-controls="pills-penonton" aria-selected="false">PENONTON</button>
+          </li>
+    </ul>
+  </div>
+</div>
+
+<div class="flex-column tab-content px-5" id="pills-roleContent">
+    <div class="tab-pane fade show active" id="pills-manajer" role="tabpanel" aria-labelledby="pills-manajer-tab" tabindex="0">
+        <form method="POST" id="manajer-form" action="register.php">
+            {% csrf_token %}
+            <div class="row mb-3">
+              <label for="inputUsernameMNJ" class="col-sm-2 col-form-label">Username</label>
+              <div class="col-sm-10">
+                <input type="username" name="username" class="form-control" id="inputUsernameMNJ" required>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="inputPasswordMNJ" class="col-sm-2 col-form-label">Password</label>
+              <div class="col-sm-10">
+                <input type="password" name="password" class="form-control" id="inputPasswordMNJ" required>
+              </div>
+            </div>
+            <div class="row mb-3">
+                <label for="inputNamaDepanMNJ" class="col-sm-2 col-form-label">Nama Depan</label>
+                <div class="col-sm-10">
+                  <input type="name" name="nama_depan" class="form-control" id="inputNamaDepanMNJ" required>
+                </div>
+              </div>
+            <div class="row mb-3">
+                <label for="inputNamaBelakangMNJ" class="col-sm-2 col-form-label">Nama Belakang</label>
+                <div class="col-sm-10">
+                  <input type="name" name="nama_belakang" class="form-control" id="inputNamaBelakangMNJ" required>
+                </div>
+              </div>
+            <div class="row mb-3">
+                <label for="inputNomorHPMNJ" class="col-sm-2 col-form-label">Nomor HP</label>
+                <div class="col-sm-10">
+                  <input type="number" name="nomor_hp" class="form-control" id="inputNomorHPMNJ" required>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputEmailMNJ" class="col-sm-2 col-form-label">Email</label>
+                <div class="col-sm-10">
+                  <input type="email" name="email" class="form-control" id="inputEmailMNJ" required>
+                </div>
+              </div>
+            <div class="row mb-3">
+                <label for="inputAlamatMNJ" class="col-sm-2 col-form-label">Alamat</label>
+                <div class="col-sm-10">
+                  <input type="address" name="alamat" class="form-control" id="inputAlamatMNJ" required>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputStatusMNJ" class="col-sm-2 col-form-label">Status</label>
+                <div class="col-sm-1 justify-content-start" id="inputStatusMNJ">
+                  <input type="radio" name="status" class="form-control" id="mahasiswaMNJ" value="mahasiswa" required>
+                  <label for="mahasiswaMNJ">Mahasiswa</label><br>
+
+                  <input type="radio" name="status" class="form-control" id="dosenMNJ" value="dosen" required>
+                  <label for="dosenMNJ">Dosen</label><br>
+
+                  <input type="radio" name="status" class="form-control" id="tendikMNJ" value="tendik" required>
+                  <label for="tendikMNJ">Tendik</label><br>
+
+                  <input type="radio" name="status" class="form-control" id="alumniMNJ" value="alumni" required>
+                  <label for="alumniMNJ">Alumni</label><br>
+
+                  <input type="radio" name="status" class="form-control" id="umumMNJ" value="umum" required>
+                  <label for="umumMNJ">Umum</label><br>
+                </div>
+              </div>
+            <input type="hidden" name="role" value="manajer">
+            <button type="submit" class="btn btn-primary">Sign Up & Login</button>
+          </form>
+      </div>
+    
+      <div class="tab-pane fade" id="pills-panitia" role="tabpanel" aria-labelledby="pills-panitia-tab" tabindex="0">
+        <form method="POST" id="panitia-form" action="register.php">
+            {% csrf_token %}
+            <div class="row mb-3">
+              <label for="inputUsernamePAN" class="col-sm-2 col-form-label">Username</label>
+              <div class="col-sm-10">
+                <input type="username" name="username" class="form-control" id="inputUsernamePAN" required>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="inputPasswordPAN" class="col-sm-2 col-form-label">Password</label>
+              <div class="col-sm-10">
+                <input type="password" name="password" class="form-control" id="inputPasswordPAN" required>
+              </div>
+            </div>
+            <div class="row mb-3">
+                <label for="inputNamaDepanPAN" class="col-sm-2 col-form-label">Nama Depan</label>
+                <div class="col-sm-10">
+                  <input type="name" name="nama_depan" class="form-control" id="inputNamaDepanPAN" required>
+                </div>
+              </div>
+            <div class="row mb-3">
+                <label for="inputNamaBelakangPAN" class="col-sm-2 col-form-label">Nama Belakang</label>
+                <div class="col-sm-10">
+                  <input type="name" name="nama_belakang" class="form-control" id="inputNamaBelakangPAN" required>
+                </div>
+              </div>
+            <div class="row mb-3">
+                <label for="inputNomorHPPAN" class="col-sm-2 col-form-label">Nomor HP</label>
+                <div class="col-sm-10">
+                  <input type="number" name="nomor_hp" class="form-control" id="inputNomorHPPAN" required>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputEmailPAN" class="col-sm-2 col-form-label">Email</label>
+                <div class="col-sm-10">
+                  <input type="email" name="email" class="form-control" id="inputEmailPAN" required>
+                </div>
+              </div>
+            <div class="row mb-3">
+                <label for="inputAlamatPAN" class="col-sm-2 col-form-label">Alamat</label>
+                <div class="col-sm-10">
+                  <input type="address" name="alamat" class="form-control" id="inputAlamatPAN" required>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputStatusPAN" class="col-sm-2 col-form-label">Status</label>
+                <div class="col-sm-1 justify-content-start" id="inputStatusPAN">
+                  <input type="radio" name="status" class="form-control" id="mahasiswaPAN" value="mahasiswa" required> 
+                  <label for="mahasiswaPAN">Mahasiswa</label><br>
+
+                  <input type="radio" name="status" class="form-control" id="dosenPAN" value="dosen" required>
+                  <label for="dosenPAN">Dosen</label><br>
+
+                  <input type="radio" name="status" class="form-control" id="tendikPAN" value="tendik" required>
+                  <label for="tendikPAN">Tendik</label><br>
+ 
+                  <input type="radio" name="status" class="form-control" id="alumniPAN" value="alumni" required>
+                  <label for="alumniPAN">Alumni</label><br>
+
+                  <input type="radio" name="status" class="form-control" id="umumPAN" value="umum" required>
+                  <label for="umumPAN">Umum</label><br>
+                </div>
+              </div>
+            <div class="row mb-3">
+                <label for="inputJabatanPAN" class="col-sm-2 col-form-label">Jabatan</label>
+                <div class="col-sm-10">
+                  <input type="role" name="jabatan" class="form-control" id="inputAlamatPAN" required>
+                </div>
+              </div>
+            
+            <input type="hidden" name="role" value="panitia">
+            <button type="submit" class="btn btn-primary">Sign Up & Login</button>
+          </form>
+      </div>
+    
+      <div class="tab-pane fade" id="pills-penonton" role="tabpanel" aria-labelledby="pills-penonton-tab" tabindex="0">
+        <form method="POST" id="penonton-form" action="register.php">
+            {% csrf_token %}
+            <div class="row mb-3">
+              <label for="inputUsernamePEN" class="col-sm-2 col-form-label">Username</label>
+              <div class="col-sm-10">
+                <input type="username" name="username" class="form-control" id="inputUsernamePEN" required>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="inputPasswordPEN" class="col-sm-2 col-form-label">Password</label>
+              <div class="col-sm-10">
+                <input type="password" name="password" class="form-control" id="inputPasswordPEN" required>
+              </div>
+            </div>
+            <div class="row mb-3">
+                <label for="inputNamaDepanPEN" class="col-sm-2 col-form-label">Nama Depan</label>
+                <div class="col-sm-10">
+                  <input type="name" name="nama_depan" class="form-control" id="inputNamaDepanPEN" required>
+                </div>
+              </div>
+            <div class="row mb-3">
+                <label for="inputNamaBelakangPEN" class="col-sm-2 col-form-label">Nama Belakang</label>
+                <div class="col-sm-10">
+                  <input type="name" name="nama_belakang" class="form-control" id="inputNamaBelakangPEN" required>
+                </div>
+              </div>
+            <div class="row mb-3">
+                <label for="inputNomorHPPEN" class="col-sm-2 col-form-label">Nomor HP</label>
+                <div class="col-sm-10">
+                  <input type="number" name="nomor_hp" class="form-control" id="inputNomorHPPEN" required>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputEmailPEN" class="col-sm-2 col-form-label">Email</label>
+                <div class="col-sm-10">
+                  <input type="email" name="email" class="form-control" id="inputEmailPEN" required>
+                </div>
+              </div>
+            <div class="row mb-3">
+                <label for="inputAlamatPEN" class="col-sm-2 col-form-label">Alamat</label>
+                <div class="col-sm-10">
+                  <input type="address" name="alamat" class="form-control" id="inputAlamatPEN" required>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputStatusPEN" class="col-sm-2 col-form-label">Status</label>
+                <div class="col-sm-1 justify-content-start" id="inputStatusPEN">
+                  <input type="radio" name="status" class="form-control" id="mahasiswaPEN" value="mahasiswa" required>
+                  <label for="mahasiswaPEN">Mahasiswa</label><br>
+
+                  <input type="radio" name="status" class="form-control" id="dosenPEN" value="dosen" required>
+                  <label for="dosenPEN">Dosen</label><br>
+
+                  <input type="radio" name="status" class="form-control" id="tendikPEN" value="tendik" required>
+                  <label for="tendikPEN">Tendik</label><br>
+
+                  <input type="radio" name="status" class="form-control" id="alumniPEN" value="alumni" required>
+                  <label for="alumniPEN">Alumni</label><br>
+
+                  <input type="radio" name="status" class="form-control" id="umumPEN" value="umum" required>
+                  <label for="umumPEN">Umum</label><br>
+                </div>
+              </div>
+            <input type="hidden" name="role" value="penonton">
+            <button type="submit" class="btn btn-primary">Sign Up & Login</button>
+          </form>
+      </div>
+</div>
+  
+
+
+
+  <!-- Pills navs -->
+  
+
+  <!-- Pills content -->
+  {% endblock content %}
