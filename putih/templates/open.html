@@ -12,30 +12,39 @@
         const registerPanitia = document.getElementById('login-form')
         const registerPenonton = document.getElementById('login-form')
 
-        loginForm.addEventListener('submit', async(event)=> {
-            event.preventDefault()
+        // loginForm.addEventListener('submit', async(event)=> {
+        //     event.preventDefault()
 
-            const formData = {
-                username: document.getElementById("inputUsername3").value,
-                password: document.getElementById("inputPassword3").value,
-            };
+        //     console.log("loginnn")
+
+        //     const formData = {
+        //         username: document.getElementById("inputUsername3").value,
+        //         password: document.getElementById("inputPassword3").value,
+        //     };
             
-            var formDataobj = new FormData()
-            formDataobj.append('username', formData['username'])
-            formDataobj.append('password', formData['password'])
+        //     var formDataobj = new FormData()
+        //     formDataobj.append('username', formData['username'])
+        //     formDataobj.append('password', formData['password'])
 
-            console.log(formDataobj)
 
-            const response = await fetch("{% url 'putih:login' %}", {
-                method: 'POST',
-                body: formDataobj,
-            })
+        //     const response = await fetch("{% url 'putih:login' %}", {
+        //         method: 'POST',
+        //         body: formDataobj,
+        //     })
 
-            console.log(response)
+        //     const data = await response.text()
 
-            const message = await response.json()
-            console.log(message)
-        })
+            
+
+
+        //     console.log("LOGINNNNN")
+
+        //     console.log('dah reload')
+
+
+
+            
+        // })
     })
 
 </script>
@@ -49,25 +58,27 @@
   </li>
 </ul>
 <div class="flex-column tab-content px-5" id="pills-tabContent">
-  <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
-    <form method="POST" id="login-form">
+  <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="pills-login-tab" tabindex="0">
+    <form method="POST" id="login-form" action="login.php">
+        {% csrf_token %}
         <div class="row mb-3">
           <label for="inputUsername3" class="col-sm-2 col-form-label">Username</label>
           <div class="col-sm-10">
-            <input type="username" class="form-control" id="inputUsername3">
+            <input type="username" name="username" class="form-control" id="inputUsername3">
           </div>
         </div>
         <div class="row mb-3">
           <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
           <div class="col-sm-10">
-            <input type="password" class="form-control" id="inputPassword3">
+            <input type="password" name="password" class="form-control" id="inputPassword3">
           </div>
         </div>
-        
         <button type="submit" class="btn btn-primary">Sign in</button>
       </form>
   </div>
-  <div class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">ASDASDA
+  
+  <div class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="pills-register-tab" tabindex="0">
+    PILIH ROLE KAMU
     <ul class="nav nav-pills flex-column flex-sm-row gap-5 py-3 nav-justified" id="pills-role">
         <li class="flex-md-fill nav-item justify-content-center" role="presentation">
             <button class="nav-link active" id="pills-manajer-tab" data-bs-toggle="pill" data-bs-target="#pills-manajer" type="button" role="tab" aria-controls="pills-manajer" aria-selected="true">MANAJER</button>
@@ -81,8 +92,19 @@
     </ul>
   </div>
 
-  <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">KLJJKLJKL</div>
-  <div class="tab-pane fade" id="pills-disabled" role="tabpanel" aria-labelledby="pills-disabled-tab" tabindex="0">OOIOIIOIO</div>
+  <div class="tab-pane fade show active" id="pills-manajer" role="tabpanel" aria-labelledby="pills-manajer-tab" tabindex="0">
+
+  </div>
+
+  <div class="tab-pane fade" id="pills-panitia" role="tabpanel" aria-labelledby="pills-panitia-tab" tabindex="0">
+
+  </div>
+
+  <div class="tab-pane fade" id="pills-penonton" role="tabpanel" aria-labelledby="pills-penonton-tab" tabindex="0">
+
+  </div>
+
+
 </div>
   <!-- Pills navs -->
   

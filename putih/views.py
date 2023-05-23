@@ -1,12 +1,14 @@
 from django.shortcuts import render
 import psycopg2
 import psycopg2.extras
-from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseBadRequest, HttpResponseRedirect
+import json
+from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseBadRequest, HttpResponseRedirect, JsonResponse
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 import uuid
 from putih.decorators.not_logged_in_decorators import not_login_required
+from putih.decorators.logged_in_decorators import *
 
 
 # Create your views here.
@@ -21,9 +23,14 @@ conn = psycopg2.connect(database=settings.DATABASE_NAME,
 cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 #TODO: AYOK TRIAS BIKIN FE
-def dashboard(request):
+def open(request):
     context = {}
     return render(request, "open.html", context)
+
+@login_required
+def dashboard(request):
+    context = {}
+    return render(request, "dashboard.html", context)
 
 @csrf_exempt
 def register(request):
@@ -68,15 +75,20 @@ def register(request):
 @not_login_required
 def login(request):
     if (request.method == "POST"):
+
         username = request.POST.get("username")
         raw_password = request.POST.get("password")
 
-        response = HttpResponse()
-        response.status_code = 200
+
+        # response = JsonResponse({"message": "Login successful"})
+        # response.set_cookie("username", username, expires=None)
+
+        response = HttpResponseRedirect(reverse('putih:dashboard'))
         response.set_cookie("username", username, expires=None)
-        response.content = "Login Success"
+
 
         user_as_manajer = check_user_based_on_role(username, raw_password, "MANAJER")
+        print(user_as_manajer)
         user_as_penonton = check_user_based_on_role(username, raw_password, "PENONTON")
         user_as_panitia = check_user_based_on_role(username, raw_password, "PANITIA")
 
@@ -84,10 +96,10 @@ def login(request):
             response.set_cookie("id_role", user_as_manajer[0]["id_manajer"])
             response.set_cookie("role", "manajer", expires=None)
         elif (user_as_penonton != []):
-            response.set_cookie("id_role", user_as_manajer[0]["id_penonton"])
+            response.set_cookie("id_role", user_as_penonton[0]["id_penonton"])
             response.set_cookie("role", "penonton", expires=None)
         elif (user_as_panitia != []):
-            response.set_cookie("id_role", user_as_manajer[0]["id_panitia"])
+            response.set_cookie("id_role", user_as_panitia[0]["id_panitia"])
             response.set_cookie("role", "panitia", expires=None)
         else:
             return HttpResponseBadRequest("Invalid credentials")
@@ -95,12 +107,13 @@ def login(request):
         return response
     
     context = {}
-        
-    return render(request, 'login.html', context)
+    return render(request, 'open.html', context)
+
+
 
 @csrf_exempt
 def logout(request):
-    response = HttpResponseRedirect(reverse('putih:dashboard'))
+    response = HttpResponseRedirect(reverse('putih:open'))
     response.delete_cookie('username')
     response.delete_cookie('role')
     response.delete_cookie('id_role')
