@@ -29,8 +29,19 @@ def open(request):
 
 @login_required
 def dashboard(request):
-    context = {}
-    return render(request, "dashboard.html", context)
+    query = f"SELECT * FROM NON_PEMAIN INNER JOIN {request.COOKIES.get('role')} ON non_pemain.id=id_{request.COOKIES.get('role')} INNER JOIN STATUS_NON_PEMAIN ON non_pemain.id=id_non_pemain WHERE id = '{request.COOKIES.get('id_role')}'"
+    if 'role' in request.COOKIES and 'username' in request.COOKIES:
+        cur.execute(query)
+        info_user = cur.fetchall()
+        print(info_user)
+        json_format(info_user)
+        context = {k: v for d in info_user for k, v in d.items()}
+
+        print(context)
+        
+        return render(request, "dashboard.html", context)
+    else:
+        return HttpResponse("Cookie not found")
 
 @csrf_exempt
 def register(request):
@@ -44,11 +55,13 @@ def register(request):
         raw_password = request.POST.get("password")
         role = request.POST.get('role')
         jabatan = request.POST.get('jabatan')
+        status = request.POST.get('status')
 
 
         response = HttpResponse()
         response.status_code = 200
         response.content = "Register Success"
+
 
         try:
             psycopg2.extras.register_uuid()
@@ -62,12 +75,24 @@ def register(request):
                                       uuid_for_new_non_pemain,
                                       role,
                                       jabatan)
+            cur.execute("INSERT INTO STATUS_NON_PEMAIN VALUES(%s, %s)", [uuid_for_new_non_pemain, status])
             conn.commit()
+
+
+
             return response
+        
         
         except Exception as e:
             conn.rollback()
             return HttpResponseBadRequest(e)
+        
+        finally:
+            response = login(request)
+            print("dah login")
+
+            return response
+            print("dah login")
         
     return HttpResponseNotAllowed("Invalid request method. Please use supported request method.")
 
@@ -75,6 +100,7 @@ def register(request):
 @not_login_required
 def login(request):
     if (request.method == "POST"):
+        print(request.POST)
 
         username = request.POST.get("username")
         raw_password = request.POST.get("password")
