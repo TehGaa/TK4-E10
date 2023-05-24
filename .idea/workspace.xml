@@ -2,8 +2,32 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c277f397-35ac-4d95-82c8-152daf06f29f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/hijau/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hijau/admin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hijau/apps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hijau/migrations/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hijau/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hijau/templates/mengelola_tim.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hijau/tests.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hijau/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hijau/views.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/putih/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/putih/admin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/putih/apps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/putih/decorators/logged_in_decorators.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/putih/decorators/not_logged_in_decorators.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/putih/migrations/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/putih/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/putih/templates/dashboard.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/putih/templates/login.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/putih/templates/open.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/putih/tests.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/putih/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/putih/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project_django/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_django/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project_django/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_django/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,7 +116,7 @@
       <workItem from="1684915414853" duration="355000" />
       <workItem from="1684915825788" duration="197000" />
       <workItem from="1684916053319" duration="377000" />
-      <workItem from="1684916483159" duration="1258000" />
+      <workItem from="1684916483159" duration="1908000" />
     </task>
     <servers />
   </component>
