@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>U-LEAGUE</title>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a href="#" class="navbar-brand">U-LEAGUE</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Mengelola Tim</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Peminjaman Stadium</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">List Pertandingan</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">History Rapat</a>
+          </li>
+
+<!--      NAVBAR PENONTON
+          <li class="nav-item">
+            <a class="nav-link" href="#">Pembelian Tiket</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">List Pertandingan</a>
+          </li>
+
+          NAVBAR PANITIA
+          <li class="nav-item">
+            <a class="nav-link" href="#">Rapat</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Manage Pertandingan</a>
+          </li>
+           -->
+          <li class="nav-item">
+            <a class="nav-link" href="#">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+    <h2 style="text-align: center;">BUAT PERTANDINGAN</h2>
+	<div class = "kondisi_buat_pertandingan">
+        <br>
+        <br>
+		
+        <!-- Example single danger button -->
+        <label for = "wasit_utama_dropdown">Pilih Wasit Utama: </label>
+        <select class="form-select" aria-label="Default select example" name = "wasit_utama_dropdown">
+            {% for item in data_w %}
+                <option value="{{ item }}">{{ item.nama }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label for = "wasit_pembantu_dropdown">Pilih Wasit Pembantu/Hakim Garis 1:</label>
+        <select class="form-select" aria-label="Default select example" name = "wasit_pembantu1_dropdown">
+            {% for item in data_w %}
+                <option value="{{ item }}">{{ item.nama }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label for = "wasit_pembantu_dropdown">Pilih Wasit Pembantu/Hakim Garis 2:</label>
+        <select class="form-select" aria-label="Default select example" name = "wasit_pembantu2_dropdown">
+            {% for item in data_w %}
+            <option value="{{ item }}">{{ item.nama }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label for = "wasit_cadangan_dropdown">Pilih Wasit Cadangan:</label>
+        <select class="form-select" aria-label="Default select example" name = "wasit_cadangan_dropdown">
+            {% for item in data_w %}
+            <option value="{{ item }}">{{ item.nama }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label for = "tim1_dropdown">Pilih Tim 1:</label>
+        <select class="form-select" aria-label="Default select example" name = "tim1_dropdown">
+            {% for item in data_t %}
+            <option value="{{ item }}">{{ item.nama_tim }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label for = "tim2_dropdown">Pilih Tim 2:</label>
+        <select class="form-select" aria-label="Default select example" name = "tim2_dropdown">
+            {% for item in data_t %}
+            <option value="{{ item }}">{{ item.nama_tim }}</option>
+            {% endfor %}
+        </select>
+          <br>
+          <br>
+		<button type = "button" class = "btn btn-primary">SUBMIT</button><br><br>
+	</div>
+</body>
+</html>

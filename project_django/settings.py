@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'example_app',
     'putih',
     'hijau',
+    'biru',
 ]
 
 MIDDLEWARE = [

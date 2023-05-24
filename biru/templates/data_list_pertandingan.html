@@ -1,0 +1,80 @@
+{% extends 'base.html' %} {% block meta %}
+<title>List Pertandingan</title>
+{% endblock meta %} {% block content %}
+<div class="container align-center">
+  <h1 class="subtitle text-center">List Pertandingan</h1>
+  {% if message != "" %}
+  <div class="text-center">{{ message }}</div>
+  {% endif %}
+  <div class="table-responsive">
+    <table class="table table-bordered text-center">
+      <thead>
+        <tr>
+          <th>GRUP A</th>
+          <th>ACTION</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in data_1 %}
+        <tr>
+          <td>{{ item.nama_tim_a }} VS {{ item.nama_tim_b }}</td>
+          <td>
+            <a href="#">[update]</a>
+            <form action = "{% url 'biru:delete_pertandingan' %}" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="id_pertandingan" value="{{ item.id_pertandingan }}">
+              <button class="siruco-button" name='details' type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      <thead>
+        <tr>
+          <th>GRUP B</th>
+          <th>ACTION</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in data_2 %}
+        <tr>
+          <td>{{ item.nama_tim_a }} VS {{ item.nama_tim_b }}</td>
+          <td>
+            <a href="#">[update]</a>
+            <a href="#">[delete]</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      <thead>
+        <tr>
+          <th>GRUP C</th>
+          <th>ACTION</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>? VS ?</td>
+          <td>
+            <a href="dropdown_stadium">[add]</a>
+          </td>
+        </tr>
+      </tbody>
+      <thead>
+        <tr>
+          <th>GRUP D</th>
+          <th>ACTION</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>? VS ?</td>
+          <td>
+            <a href="#">[add]</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock content %}
