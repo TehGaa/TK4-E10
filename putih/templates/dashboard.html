@@ -5,39 +5,72 @@
 {% block content %}
 <h1>DASHBOARDDDDDDD</h1>
 
-<div class="d-flex flex-col m-3">
+<div class="flex-col m-3">
     <div class="flex-col">
         <h1>Info User</h1>
         <table>
             <tr>
                 <td>Nama Depan</td>
-                <td>{{ nama_depan }}</td>
+                <td>{{ user.0.nama_depan }}</td>
             </tr>
             <tr>
                 <td>Nama Belakang</td>
-                <td>{{ nama_belakang }}</td>
+                <td>{{ user.0.nama_belakang }}</td>
             </tr>
             <tr>
                 <td>Nomor HP</td>
-                <td>{{ nomor_hp }}</td>
+                <td>{{ user.0.nomor_hp }}</td>
             </tr>
             <tr>
                 <td>Alamat</td>
-                <td>{{ alamat }}</td>
+                <td>{{ user.0.alamat }}</td>
             </tr>
             <tr>
                 <td>Status</td>
-                <td>{{ status }}</td>
+                <td>{{ user.0.status }}</td>
             </tr>
 
           {% if request.COOKIES.role == "panitia" %}
             <tr>
                 <td>Jabatan</td>
-                <td>{{ jabatan }}</td>
+                <td>{{ user.0.jabatan }}</td>
             </tr>
             {% endif %}
         </table>
     </div>
+    <div class="flex-col py-3">
+        {% if request.COOKIES.role == "penonton" %}
+
+        <h1>Pertandingan Dipesan</h1>
+
+        {% if not dashboard %}
+        <h2>Belum Memesan Tiket</h2>
+        {% else %}
+        <table class="table table-striped">
+            <tr>
+                <th>Tim_Bertanding</th>
+                <th>Stadium</th>
+                <th>Tanggal Mulai</th>
+                <th>Tanggal Selesai</th>
+            </tr>
+            {% for info in dashboard %}
+            <tr>
+                <td>{{ info.tim_bertanding }}</td>
+                <td>{{ info.nama }}</td>
+                <td>{{ info.start_datetime }}</td>
+                <td>{{ info.end_datetime }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+
+        
+        {% endif %}
+        
+    </div>
+
+    
+
     <div class=""></div>
     <div class=""></div>
 
