@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Peminjaman Stadium{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1 class="mb-4">PEMINJAMAN STADIUM</h1>
+
+  <form>
+    <div class="mb-3">
+        <label for="stadium" class="form-label">Stadium:</label>
+        <select id="stadium" name="stadium" class="form-select">
+            {% for stadium in stadiums %}
+            <option value="{{ stadium }}">{{ stadium }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+
+    <div class="mb-3">
+      <label for="tanggal" class="form-label">Tanggal:</label>
+      <input type="date" id="tanggal" name="tanggal" class="form-control">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+{% endblock %}

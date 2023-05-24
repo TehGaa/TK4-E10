@@ -19,8 +19,22 @@ conn = psycopg2.connect(database=settings.DATABASE_NAME,
 cur = conn.cursor()
 
 def index(request):
-    query = f"SELECT * FROM STADIUM"
+    return render(request, 'index.html')
+
+def pinjam_stadium(request):
+    query = f"SELECT * FROM peminjaman"
     cur.execute(query)
     res = cur.fetchall()
-    print(res)
-    return render(request, 'index.html')
+    context = {'peminjaman_list': res}
+    return render(request, 'peminjaman-stadium.html', context)
+
+def pinjam_stadium_form(request):
+    query = "SELECT nama FROM stadium"
+    cur.execute(query)
+    res = cur.fetchall()
+    stadiums = [item[0] for item in res]
+    return render(request, 'peminjaman-stadium-form.html', {'stadiums': stadiums})
+
+def tambah_peminjaman_stadium():
+
+    return
