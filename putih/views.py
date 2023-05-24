@@ -1,12 +1,14 @@
 from django.shortcuts import render
 import psycopg2
 import psycopg2.extras
-from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseBadRequest, HttpResponseRedirect
+import json
+from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseBadRequest, HttpResponseRedirect, JsonResponse
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 import uuid
 from putih.decorators.not_logged_in_decorators import not_login_required
+from putih.decorators.logged_in_decorators import *
 
 
 # Create your views here.
@@ -21,8 +23,25 @@ conn = psycopg2.connect(database=settings.DATABASE_NAME,
 cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 #TODO: AYOK TRIAS BIKIN FE
+def open(request):
+    context = {}
+    return render(request, "open.html", context)
+
+@login_required
 def dashboard(request):
-    return HttpResponse("hello world")
+    query = f"SELECT * FROM NON_PEMAIN INNER JOIN {request.COOKIES.get('role')} ON non_pemain.id=id_{request.COOKIES.get('role')} INNER JOIN STATUS_NON_PEMAIN ON non_pemain.id=id_non_pemain WHERE id = '{request.COOKIES.get('id_role')}'"
+    if 'role' in request.COOKIES and 'username' in request.COOKIES:
+        cur.execute(query)
+        info_user = cur.fetchall()
+        print(info_user)
+        json_format(info_user)
+        context = {k: v for d in info_user for k, v in d.items()}
+
+        print(context)
+        
+        return render(request, "dashboard.html", context)
+    else:
+        return HttpResponse("Cookie not found")
 
 @csrf_exempt
 def register(request):
@@ -36,11 +55,13 @@ def register(request):
         raw_password = request.POST.get("password")
         role = request.POST.get('role')
         jabatan = request.POST.get('jabatan')
+        status = request.POST.get('status')
 
 
         response = HttpResponse()
         response.status_code = 200
         response.content = "Register Success"
+
 
         try:
             psycopg2.extras.register_uuid()
@@ -54,12 +75,24 @@ def register(request):
                                       uuid_for_new_non_pemain,
                                       role,
                                       jabatan)
+            cur.execute("INSERT INTO STATUS_NON_PEMAIN VALUES(%s, %s)", [uuid_for_new_non_pemain, status])
             conn.commit()
+
+
+
             return response
+        
         
         except Exception as e:
             conn.rollback()
             return HttpResponseBadRequest(e)
+        
+        finally:
+            response = login(request)
+            print("dah login")
+
+            return response
+            print("dah login")
         
     return HttpResponseNotAllowed("Invalid request method. Please use supported request method.")
 
@@ -67,15 +100,21 @@ def register(request):
 @not_login_required
 def login(request):
     if (request.method == "POST"):
+        print(request.POST)
+
         username = request.POST.get("username")
         raw_password = request.POST.get("password")
 
-        response = HttpResponse()
-        response.status_code = 200
+
+        # response = JsonResponse({"message": "Login successful"})
+        # response.set_cookie("username", username, expires=None)
+
+        response = HttpResponseRedirect(reverse('putih:dashboard'))
         response.set_cookie("username", username, expires=None)
-        response.content = "Login Success"
+
 
         user_as_manajer = check_user_based_on_role(username, raw_password, "MANAJER")
+        print(user_as_manajer)
         user_as_penonton = check_user_based_on_role(username, raw_password, "PENONTON")
         user_as_panitia = check_user_based_on_role(username, raw_password, "PANITIA")
 
@@ -83,21 +122,24 @@ def login(request):
             response.set_cookie("id_role", user_as_manajer[0]["id_manajer"])
             response.set_cookie("role", "manajer", expires=None)
         elif (user_as_penonton != []):
-            response.set_cookie("id_role", user_as_manajer[0]["id_penonton"])
+            response.set_cookie("id_role", user_as_penonton[0]["id_penonton"])
             response.set_cookie("role", "penonton", expires=None)
         elif (user_as_panitia != []):
-            response.set_cookie("id_role", user_as_manajer[0]["id_panitia"])
+            response.set_cookie("id_role", user_as_panitia[0]["id_panitia"])
             response.set_cookie("role", "panitia", expires=None)
         else:
             return HttpResponseBadRequest("Invalid credentials")
         
         return response
-        
-    return HttpResponseNotAllowed("Invalid request method. Please use supported request method.")
+    
+    context = {}
+    return render(request, 'open.html', context)
+
+
 
 @csrf_exempt
 def logout(request):
-    response = HttpResponseRedirect(reverse('putih:dashboard'))
+    response = HttpResponseRedirect(reverse('putih:open'))
     response.delete_cookie('username')
     response.delete_cookie('role')
     response.delete_cookie('id_role')

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        /* Use a football field image as the background */
+        body {
+            background-image: url("football-field.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Center the login form */
+        .login-form {
+            width: 300px;
+            margin: 100px auto;
+        }
+
+        /* Style the login card with rounded corners and a shadow */
+        .login-card {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background-color: white;
+            padding: 30px;
+        }
+
+        /* Style the input fields with rounded borders and a light gray background */
+        input[type=text],
+        input[type=password] {
+            width: 92%;
+            border: none;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+            padding: 10px;
+        }
+
+        /* Style the login button with rounded corners and a green background */
+        input[type=submit] {
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            background-color: #04AA6D;
+            color: white;
+            padding: 10px;
+        }
+
+        /* Add some space between the input fields and the button */
+        input[type=text]+input[type=password],
+        input[type=password]+input[type=submit] {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-form">
+        <div class="login-card">
+            <h1>Login</h1>
+            <form action="/action_page.php" method="post">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <input type="submit" value="Login">
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

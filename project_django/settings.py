@@ -31,6 +31,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
+LOGIN_REDIRECT_URL = '/putih/dashboard'
+
 # Application definition
 
 INSTALLED_APPS = [
