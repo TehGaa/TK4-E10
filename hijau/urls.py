@@ -13,4 +13,4 @@ urlpatterns = [
     path('insert-pelatih', insert_pelatih, name='insert-pelatih-into-tim'),
     path('insert-pemain-into-tim', insert_pemain_into_tim, name='insert-pemain-into-tim'),
     path('update-pelatih', update_pelatih, name='update-pelatih'),
-]
+]   
