@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>Form Registrasi</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<style>
+    /* CSS styles */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #cdeefd;
+        background-image: url(https://a-static.besthdwallpaper.com/fifa-23-football-arena-wallpaper-3440x1440-102008_15.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 100vh;
+    }
+    .box {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+    .box h3 {
+        text-align: center;
+    }
+    .box label {
+        display: block;
+        margin-bottom: 10px;
+    }
+    .box select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+
+    .box input[type="submit"] {
+        background-color: #1DA1F2;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-align: center;
+    }
+
+    .submit-container {
+        width: 100%;
+        text-align: center;
+    }
+</style>
+<script>
+    var csrf = "{{csrf_token}}"
+    
+    function addPelatih(id_pemain){
+        $.ajax({
+            method: "POST",
+            contentType: "application/json",
+            headers:{
+                "X-CSRFToken": csrf
+            },
+            data:{
+                "id_pemain": id_pemain
+            },
+            success: function(data){
+                alert(data)
+            }
+        })
+    }
+</script>
+{% endblock meta %}
+
+{% block content %}
+<div class="box">
+    <h3>DAFTAR PEMAIN</h3>
+    <label for="pelatih">Pelatih yang mau didaftarkan:</label>
+    <select id="pelatih" name="pelatih">
+        {% for elem in data %}
+            <option value="{{elem.id_pelatih}}">{{elem.nama_depan}} {{elem.nama_belakang}}</option>
+        {% endfor %}
+    </select>
+    <div class="submit-container">
+        <button type="submit" onclick="addPelatih('{{elem.id_pemain}}')">Submit</button>
+    </div>
+</div>
+{% endblock content %}
