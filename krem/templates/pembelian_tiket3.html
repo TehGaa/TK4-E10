@@ -1,0 +1,62 @@
+{% extends 'base.html' %} {% block meta %}
+<title>Pembelian Tiket Beli Tiket</title>
+{% endblock meta %}
+
+{% block content %}
+<script>
+    // function handleButtonClick(id_pertandingan) {
+    //   const csrf_token = "{{ csrf_token }}";
+    //   data = {"id_pertandingan": id_pertandingan}
+    //   console.log(JSON.stringify(data))
+    //   fetch("{% url 'krem:pembelian_tiket3' %}", {
+    //     method: 'POST',
+    //     headers: {
+    //         'X-CSRFToken': csrf_token,
+    //         'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(data)
+    //   })
+    //   .then(response => response.json())
+    //   .then(result => {
+    //     console.log(result);
+    //   })
+    //   .catch(error => {
+    //     console.error(error);
+    //   })
+    // }
+  </script>
+
+<h1>BELI TIKET</h1>
+
+
+<form method="POST" action="pembelian_tiket4">
+    {% csrf_token %}
+    <div class="d-flex flex-col"></div>
+    <div class="p-2">
+        <label for="jenis_tiket">Jenis Tiket:</label>
+        <select name="jenis_tiket" id="jenis_tiket">
+            <option value="VIP">VIP</option>
+            <option value="Main East">Main East</option>
+            <option value="Kategori 1">Kategori 1</option>
+            <option value="Kategori 2">Kategori 2</option>
+        </select>
+    </div>
+
+    <div class="p-2">
+        <label for="jenis_pembayaran">Pembayaran:</label>
+        <select name="jenis_pembayaran" id="jenis_pembayaran">
+            <option value="Gopay">Gopay</option>
+            <option value="ShopeePay">ShopeePay</option>
+            <option value="Transfer bank">Transfer bank</option>
+        </select>
+    </div>
+
+    <div class="p-2">
+        <button type="submit" class="btn btn-primary">Beli Tiket</button>
+    </div>
+
+</form>
+
+
+
+{% endblock content %}

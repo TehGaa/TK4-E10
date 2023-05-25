@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>Form Registrasi</title>
+<style>
+    /* CSS styles */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #cdeefd;
+        background-image: url(https://a-static.besthdwallpaper.com/fifa-23-football-arena-wallpaper-3440x1440-102008_15.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 100vh;
+    }
+    .box {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+    .box h3 {
+        text-align: center;
+    }
+    .box label {
+        display: block;
+        margin-bottom: 10px;
+    }
+    .box select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+
+    .box input[type="submit"] {
+        background-color: #1DA1F2;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-align: center;
+    }
+
+    .submit-container {
+        width: 100%;
+        text-align: center;
+    }
+</style>
+<script>
+    var csrf = "{{csrf_token}}"
+    var url_insert_pelatih_into_tim = "{% url 'hijau:insert-pelatih-into-tim' %}"
+    function addPelatih(id_pelatih){
+        $.ajax({
+            method: "POST",
+            contentType: "application/json",
+            url: url_insert_pelatih_into_tim,
+            headers:{
+                "X-CSRFToken": csrf
+            },
+            data:{
+                'csrfmiddlewaretoken': csrf,
+                "id_pelatih": id_pelatih
+            },
+            success: function(data){
+                alert(data)
+                window.location.reload
+            }
+        })
+    }
+
+    $(document).ready(function(){
+        $("#submit-button").click(function(){
+            const id_pelatih = $("#pelatih").val()
+            addPelatih(id_pelatih)
+        })
+    })
+</script>
+{% endblock meta %}
+
+{% block content %}
+<div class="box">
+    <h3>DAFTAR PELATIH</h3>
+    <label for="pelatih">Pelatih yang mau didaftarkan:</label>
+    <select id="pelatih" name="pelatih">
+        {% for elem in data %}
+            <option value="{{elem.id_pelatih}}">{{elem.nama_depan}} {{elem.nama_belakang}} - {{elem.spesialisasi}}</option>
+        {% endfor %}
+    </select>
+    <div class="submit-container">
+        <button type="button" id="submit-button">Submit</button>
+    </div>
+</div>
+{% endblock content %}

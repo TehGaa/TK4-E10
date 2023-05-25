@@ -3,7 +3,6 @@
 
 {% block meta %}
 <title>Form Registrasi</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <style>
     /* CSS styles */
     
@@ -50,22 +49,25 @@
 </style>
 
 <script>
-    var urlToHome = "{% url 'hijau:home' %}"
+    var url_to_create_tim = "{% url 'hijau:create-tim' %}"
+    var url_to_tim = "{% url 'hijau:home' %}"
+    var csrf = "{{csrf_token}}"
     $(document).ready(function(){
         $("#submit").click(function(){
             $.ajax({
-                url: urlToHome,
+                url: url_to_create_tim,
                 type: "POST",
-                dataType: "json",
                 headers: {
-                    "X-CSRFToken": "{{csrf_token}}"
+                    "X-CSRFToken": csrf
                 },
                 data: {
+                    'csrfmiddlewaretoken': csrf,
                     "nama-tim": $("#nama-tim").val(),
                     "nama-univ": $("#nama-univ").val(),
                 },
                 success: function(data){
                     alert(data)
+                    window.location.href = url_to_tim
                 }
             })
         })
@@ -84,6 +86,6 @@
     <label for="nama-univ">Nama Universitas:</label>
     <input type="text" id="nama-univ" name="nama-univ">
 
-    <button class="btn btn-primary" value="Daftar" id="submit">Submit</button>
+    <button class="btn btn-primary" id="submit">Submit</button>
 </div>
 {% endblock content %}

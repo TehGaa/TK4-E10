@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tim</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- <link rel="stylesheet" href="{% static 'css/style.css' %}"> -->
+        <title>U-LEAGUE</title>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
+    </head>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        font-family: Arial, sans-serif;
+        background-color: #cdeefd;
+        background-image: url(https://a-static.besthdwallpaper.com/fifa-23-football-arena-wallpaper-3440x1440-102008_15.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 100vh;
+      }
+      
+      h2 {
+        font-size: 25px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        text-align: center;
+        color: white;
+      }
+      h3 {
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 30px;
+        margin-bottom: 10px;
+        text-align: center;
+        color: white;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 8px;
+        font-size: 12px;
+        border: 1px solid #ddd;
+        background-color: #f2f2f2;
+      }
+      th {
+        background-color: #1DA1F2;
+        font-weight: bold;
+      }
+
+      .button {
+        font-size: 15px;
+        background-color: #1DA1F2;
+        padding: 5px;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+          <a href="#" class="navbar-brand">U-LEAGUE</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item active">
+                <a class="nav-link" href="#">Dashboard</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Mengelola Tim</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Peminjaman Stadium</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">List Pertandingan</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">History Rapat</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Logout</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+    <div class="container">
+      <h2>Tim</h2>
+      <h3>Pemain</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Nama Pemain</th>
+            <th>No HP</th>
+            <th>Tanggal Lahir</th>
+            <th>Is Captain</th>
+            <th>Posisi</th>
+            <th>NPM</th>
+            <th>Jenjang</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>David Beckham</td>
+            <td>08123456789</td>
+            <td>5 Maret 2000</td>
+            <td>Tidak</td>
+            <td>Gelandang</td>
+            <td>123456789</td>
+            <td>S1</td>
+            <td>
+              <button class="button">Make Captain</button>
+              <button class="button button-danger">Delete</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Lionel Messi</td>
+            <td>08765432101</td>
+            <td>12 Oktober 2001</td>
+            <td>Ya</td>
+            <td>Bek</td>
+            <td>234567890</td>
+            <td>D3</td>
+            <td>
+              <button class="button">Make Captain</button>
+              <button class="button button-danger">Delete</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Cristiano Ronaldo</td>
+            <td>08987654321</td>
+            <td>20 Januari 1999</td>
+            <td>Tidak</td>
+            <td>Penyerang</td>
+            <td>345678901</td>
+            <td>S1</td>
+            <td>
+              <button class="button">Make Captain</button>
+              <button class="button button-danger">Delete</button>
+            </td>
+            </tr>
+        </tbody>
+        </table>
+            <h3>Pelatih</h3>
+            <table>
+                <thead>
+                    <tr>
+                      <th>Nama</th>
+                      <th>No HP</th>
+                      <th>Email</th>
+                      <th>Alamat</th>
+                      <th>Spesialisasi</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                <tbody>
+                    <tr>
+                        <td>Ari Susanto</td>
+                        <td>08123256789</td>
+                        <td>arisusanto@gmail.com</td>
+                        <td>Jalan Bahari No. 123, Depok</td>
+                        <td>Taktik dan Strategi</td>
+                        <td>
+                          <button class="button button-danger">Delete</button>
+                        </td>
+                      </tr>
+                </tbody>
+            </table>
+    <button class="button">Pemain</button>
+    <button class="button">Pelatih</button>
+
+    </div>
+</body>
