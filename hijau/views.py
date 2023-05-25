@@ -40,13 +40,18 @@ def home(request):
 def create_tim(request):
     if (request.method == "POST"):
         nama_tim = request.POST.get('nama-tim')
-        nama_univ = request.POST.get('nama_univ')
+        nama_univ = request.POST.get('nama-univ')
         try:
             cur.execute('INSERT INTO TIM VALUES(%s, %s)', [nama_tim, nama_univ, ])
             conn.commit()
-            return f'insert tim {nama_tim} with univ name {nama_univ} succeded'
+
+            cur.execute('INSERT INTO TIM_MANAJER VALUES(%s, %s)',[request.COOKIES.get('id_role'), nama_tim, ])
+            conn.commit()
+
+            return HttpResponse('mantap')
         except Exception as e:
             conn.rollback()
+            print(e)
             return HttpResponse(e)
     
     return HttpResponseNotAllowed("Invalid request method. Please use supported request method.")
@@ -65,13 +70,64 @@ def add_pemain(request):
 @login_required
 @login_required_as_role('manajer')
 def add_pelatih(request):
-    cur.execute("SELECT * FROM PELATIH WHERE nama_tim IS NULL")
+    cur.execute("SELECT * FROM PELATIH P JOIN NON_PEMAIN N ON P.id_pelatih = N.id JOIN SPESIALISASI_PELATIH S ON P.id_pelatih = S.id_pelatih WHERE nama_tim IS NULL")
     result = cur.fetchall()
     json_format(result)
     data = {
         "data":result
     }
     return render(request, "pemilihan_pelatih.html", context=data)
+
+@login_required
+@login_required_as_role('manajer')
+def insert_pemain_into_tim(request):
+    if (request.method == 'PUT'):
+
+        payload = QueryDict(request.body)
+        id_pemain = payload.get('id_pemain')
+        tim = get_tim_from_manajer(request.COOKIES.get('id_role'))
+        try:
+            psycopg2.extras.register_uuid()
+            cur.execute("UPDATE PEMAIN SET nama_tim=%s WHERE id_pemain=%s",[tim[0]['nama_tim'], id_pemain, ])
+            conn.commit()
+            return HttpResponse("Success")
+        except Exception as e:
+            conn.rollback()
+            print(e)
+            return HttpResponseBadRequest("Failed to update pemain")
+
+@login_required
+@login_required_as_role('manajer')
+def insert_pelatih(request):
+    if (request.method == 'PUT'):
+        payload = QueryDict(request.body)
+        id_pelatih = payload.get('id_pelatih')
+        tim = get_tim_from_manajer(request.COOKIES.get('id_role'))
+        try:
+            psycopg2.extras.register_uuid()
+            cur.execute("UPDATE PELATIH SET nama_tim=%s WHERE id_pelatih=%s",[tim[0]['nama_tim'], id_pelatih, ])
+            conn.commit()
+            return HttpResponse("Success")
+        except Exception as e:
+            conn.rollback()
+            print(e)
+        return HttpResponseBadRequest("Failed to update pelatih")
+
+@login_required
+@login_required_as_role('manajer')
+def update_pelatih(request):
+    if(request.method == "PUT"):
+        payload = QueryDict(request.body)
+        id_pelatih = payload.get('id_pelatih')
+        try:
+            cur.execute("UPDATE PELATIH SET nama_tim=NULL WHERE id_pelatih=%s",[id_pelatih, ])
+            conn.commit()
+            return HttpResponse("Success")
+        except Exception as e:
+            conn.rollback()
+            print(e)
+            return HttpResponse("Unsuccessful")
+    return HttpResponseNotAllowed("Invalid request method. Please use supported request method.")
 
 
 @login_required
@@ -121,10 +177,10 @@ def get_pemain_from_tim(nama_tim):
 
 def get_pelatih_from_tim(nama_tim):
     cur.execute("SELECT * FROM PELATIH, NON_PEMAIN WHERE id = id_pelatih AND nama_tim = %s", [nama_tim, ])
-    result = dict(cur.fetchone())
-    cur.execute("SELECT spesialisasi FROM SPESIALISASI_PELATIH WHERE id_pelatih = %s", [result["id_pelatih"]])
-    data = cur.fetchall()
-    if (data != []):
-        result['spesialisasi'] = [obj[0] for obj in cur.fetchall()]
+    result = cur.fetchall()
+    json_format(result)
+    for i in range(len(result)):
+        cur.execute("SELECT spesialisasi FROM SPESIALISASI_PELATIH WHERE id_pelatih = %s", [result[i]["id_pelatih"]])
+        result[i]['spesialisasi'] = cur.fetchall()
     return result
 

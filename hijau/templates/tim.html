@@ -61,14 +61,16 @@
 </style>
 
 <script>
-    $(document).ready(function(){
-        if ("{{data.0.pelatih.id_pelatih}}" != "") $("#button-pelatih").hide()
-    })
+    // $(document).ready(function(){
+    //     if ("{{data.0.pelatih.id_pelatih}}" != "") $("#button-pelatih").hide()
+    // })
 
     const url_update_captain = "{% url 'hijau:update-captain' %}"
     const url_delete_pemain = "{% url 'hijau:delete-pemain' %}"
     const url_add_pemain = "{% url 'hijau:add-pemain' %}"
     const url_home = "{% url 'hijau:home' %}"
+    const url_add_pelatih = "{% url 'hijau:add-pelatih' %}"
+    const url_delete_pelatih = "{% url 'hijau:update-pelatih' %}"
     const csrf = "{{csrf_token}}"
 
     function captainButton(idPemain){
@@ -97,6 +99,23 @@
             },
             data:{
                 'id_pemain': idPemain
+            },
+            success: function(data){
+                alert(data)
+                window.location.reload()
+            }
+        })
+    }
+
+    function deleteButtonForPelatih(idPelatih){
+        $.ajax({
+            method: "PUT",
+            url: url_delete_pelatih,
+            headers:{
+                'X-CSRFToken': csrf
+            },
+            data:{
+                'id_pelatih': idPelatih
             },
             success: function(data){
                 alert(data)
@@ -157,18 +176,20 @@
                 </tr>
             </thead>
             <tbody>
+                {% for pelatih_elem in elem.pelatih %}
                 <tr>
-                <td>{{elem.pelatih.nama_depan}} {{elem.pelatih.nama_belakang}}</td>
-                <td>{{elem.pelatih.nomor_hp}}</td>
-                <td>{{elem.pelatih.email}}</td>
-                <td>{{elem.pelatih.alamat}}</td>
-                <td>{{elem.pelatih.spesialisasi}}</td>
-                    <td><button class="button button-danger">Delete</button></td>
+                    <td>{{pelatih_elem.nama_depan}} {{pelatih_elem.nama_belakang}}</td>
+                    <td>{{pelatih_elem.nomor_hp}}</td>
+                    <td>{{pelatih_elem.email}}</td>
+                    <td>{{pelatih_elem.alamat}}</td>
+                    <td>{{pelatih_elem.spesialisasi}}</td>
+                        <td><button class="button button-danger" onclick="deleteButtonForPelatih('{{pelatih_elem.id_pelatih}}')">Delete</button></td>
                 </tr>
+                {% endfor %}
             </tbody>
         </table>
         <button class="button" onclick="window.location.href = url_add_pemain">Pemain</button>
-        <button class="button" id = "button-pelatih">Pelatih</button>
+        <button class="button" id = "button-pelatih" onclick="window.location.href = url_add_pelatih">Pelatih</button>
     {% endfor %}
 
 </div>
