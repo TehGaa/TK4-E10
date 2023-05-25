@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Peminjaman Stadium{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1 class="mb-4">RAPAT PERTANDINGAN {{ pertandingan.1 }} vs {{ pertandingan.2 }}</h1>
+
+  <form method="POST" action="{% url 'pink:process_isi_rapat' %}">
+    {% csrf_token %}
+    <input type="hidden" name="pertandinganId" value="{{ pertandingan.0 }}">
+    <div class="mb-3">
+      <label for="isiRapat" class="form-label">Isi Rapat:</label>
+      <textarea name="isiRapat" class="form-control" id="isiRapat" rows="4"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+{% endblock %}
