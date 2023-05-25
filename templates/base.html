@@ -37,7 +37,7 @@
             <a class="nav-link" href="{% url 'hijau:home' %}">Mengelola Tim</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Peminjaman Stadium</a>
+            <a class="nav-link" href="{% url 'pink:pinjam_stadium' %}">Peminjaman Stadium</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'krem:list_pertandingan_manajer' %}">List Pertandingan</a>
@@ -63,7 +63,7 @@
           {% if request.COOKIES.role == "panitia" %}
 
           <li class="nav-item">
-            <a class="nav-link" href="#">Rapat</a>
+            <a class="nav-link" href="{% url 'pink:mulai_rapat' %}">Rapat</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'biru:data_list_pertandingan' %}">Manage Pertandingan</a>
