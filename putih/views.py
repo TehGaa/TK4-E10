@@ -29,7 +29,11 @@ def open(request):
 
 @login_required
 def dashboard(request):
-    query = f"SELECT * FROM NON_PEMAIN INNER JOIN {request.COOKIES.get('role')} ON non_pemain.id=id_{request.COOKIES.get('role')} INNER JOIN STATUS_NON_PEMAIN ON non_pemain.id=id_non_pemain WHERE id = '{request.COOKIES.get('id_role')}'"
+    query = f"""SELECT * FROM NON_PEMAIN 
+    INNER JOIN {request.COOKIES.get('role')} ON non_pemain.id=id_{request.COOKIES.get('role')} 
+    INNER JOIN STATUS_NON_PEMAIN ON non_pemain.id=id_non_pemain 
+    WHERE id = '{request.COOKIES.get('id_role')}'
+    """
     if 'role' in request.COOKIES and 'username' in request.COOKIES:
         cur.execute(query)
         info_user = cur.fetchall()
