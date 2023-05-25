@@ -20,7 +20,6 @@ conn = psycopg2.connect(database=settings.DATABASE_NAME,
 cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 @login_required
-@login_required_as_role('manajer')
 def home(request):
     tim = get_tim_from_manajer(request.COOKIES.get('id_role'))
     if(tim != []):
@@ -36,7 +35,6 @@ def home(request):
     return render(request, 'mengelola_tim.html')
 
 @login_required
-@login_required_as_role('manajer')
 def create_tim(request):
     if (request.method == "POST"):
         nama_tim = request.POST.get('nama-tim')
@@ -57,7 +55,6 @@ def create_tim(request):
     return HttpResponseNotAllowed("Invalid request method. Please use supported request method.")
 
 @login_required
-@login_required_as_role('manajer')
 def add_pemain(request):
     cur.execute("SELECT * FROM PEMAIN WHERE nama_tim IS NULL")
     result = cur.fetchall()
@@ -68,7 +65,6 @@ def add_pemain(request):
     return render(request, "pemilihan_pemain.html", context=data)
 
 @login_required
-@login_required_as_role('manajer')
 def add_pelatih(request):
     cur.execute("SELECT * FROM PELATIH P JOIN NON_PEMAIN N ON P.id_pelatih = N.id JOIN SPESIALISASI_PELATIH S ON P.id_pelatih = S.id_pelatih WHERE nama_tim IS NULL")
     result = cur.fetchall()
@@ -79,7 +75,6 @@ def add_pelatih(request):
     return render(request, "pemilihan_pelatih.html", context=data)
 
 @login_required
-@login_required_as_role('manajer')
 def insert_pemain_into_tim(request):
     if (request.method == 'PUT'):
 
@@ -97,7 +92,6 @@ def insert_pemain_into_tim(request):
             return HttpResponseBadRequest("Failed to update pemain")
 
 @login_required
-@login_required_as_role('manajer')
 def insert_pelatih(request):
     if (request.method == 'PUT'):
         payload = QueryDict(request.body)
@@ -114,7 +108,6 @@ def insert_pelatih(request):
         return HttpResponseBadRequest("Failed to update pelatih")
 
 @login_required
-@login_required_as_role('manajer')
 def update_pelatih(request):
     if(request.method == "PUT"):
         payload = QueryDict(request.body)
@@ -131,7 +124,6 @@ def update_pelatih(request):
 
 
 @login_required
-@login_required_as_role('manajer')
 def delete_pemain(request):
     if(request.method == "DELETE"):
         payload = QueryDict(request.body)
@@ -148,7 +140,6 @@ def delete_pemain(request):
     return HttpResponseNotAllowed("Invalid request method. Please use supported request method.")
 
 @login_required
-@login_required_as_role('manajer')
 def update_captain(request):
     if(request.method == "PUT"):
         payload = QueryDict(request.body)
