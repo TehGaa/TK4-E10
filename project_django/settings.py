@@ -141,7 +141,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 CSRF_COOKIE_SECURE = False
 SESSION_COOKIE_SECURE = False
 
-CSRF_TRUSTED_ORIGINS = ['https://tk4-e10-production-ac57.up.railway.app/']
+CSRF_TRUSTED_ORIGINS = ['https://tk4-e10-production-ac57.up.railway.app']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
