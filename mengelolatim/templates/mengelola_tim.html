@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Form Registrasi</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- <link rel="stylesheet" href="{% static 'css/style.css' %}"> -->
+        <title>U-LEAGUE</title>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
+    </head>
+    <style>
+      /* CSS styles */
+      
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        background-image: url(https://a-static.besthdwallpaper.com/fifa-23-football-arena-wallpaper-3440x1440-102008_15.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 100vh;
+      }
+
+      form {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        text-align: center;
+      }
+
+      label {
+        display: inline-block;
+        font-size: 12px;
+        margin-bottom: 10px;
+      }
+
+      input[type="text"] {
+        width: 50%;
+        padding: 5px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+
+      input[type="submit"] {
+        background-color: #1DA1F2;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      
+
+    </style>
+  </head>
+  <body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+          <a href="#" class="navbar-brand">U-LEAGUE</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item active">
+                <a class="nav-link" href="#">Dashboard</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Mengelola Tim</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Peminjaman Stadium</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">List Pertandingan</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">History Rapat</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Logout</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+    <form>
+
+        <h3>FORM REGISTRASI</h3>
+    <div class="new">
+      <label for="nama-tim">Nama Tim:</label>
+      <input type="text" id="nama-tim" name="nama-tim">
+    </div>
+
+      <label for="nama-univ">Nama Universitas:</label>
+      <input type="text" id="nama-univ" name="nama-univ">
+
+      <input type="submit" value="Daftar">
+    </form>
+  </body>
+</html>
+
