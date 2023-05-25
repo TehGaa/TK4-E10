@@ -48,6 +48,7 @@
         {% else %}
         <table class="table table-striped">
             <tr>
+                <th>Jenis Tiket</th>
                 <th>Tim_Bertanding</th>
                 <th>Stadium</th>
                 <th>Tanggal Mulai</th>
@@ -55,6 +56,7 @@
             </tr>
             {% for info in dashboard %}
             <tr>
+                <td>{{ info.jenis_tiket }}</td>
                 <td>{{ info.tim_bertanding }}</td>
                 <td>{{ info.nama }}</td>
                 <td>{{ info.start_datetime }}</td>
@@ -66,6 +68,71 @@
 
         
         {% endif %}
+
+        {% if request.COOKIES.role == "manajer" %}
+
+        {% if not info_tim %}
+        <h2>Belum Membuat Tim</h2>
+
+        {% else %}
+        <h1>Tim {{info_tim.0.nama_tim}}</h1>
+
+        <table class="table table-striped">
+            <tr>
+                <th>Nama Depan</th>
+                <th>No HP</th>
+                <th>Tanggal Lahir</th>
+                <th>Is Captain</th>
+                <th>Posisi</th>
+                <th>NPM</th>
+            </tr>
+            {% for pemain in pemain_tim %}
+            <tr>
+                <td>{{ pemain.nama_depan }}</td>
+                <td>{{ pemain.nomor_hp }}</td>
+                <td>{{ pemain.tgl_lahir }}</td>
+                <td>{{ pemain.is_captain }}</td>
+                <td>{{ pemain.posisi }}</td>
+                <td>{{ pemain.npm }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+
+        {% endif %}
+
+        {% if request.COOKIES.role == "panitia" %}
+
+        {% if not info_rapat %}
+        <h2>Belum Ada Rapat</h2>
+        {% else %}
+
+        <h1>Rapat yang Akan Datang</h1>
+
+        <table class="table table-striped">
+            <tr>
+                <th>Tanggal</th>
+                <th>Manajer Tim A</th>
+                <th>Manajer Tim B</th>
+                <th>Isi Rapat</th>
+            </tr>
+            {% for rapat in info_rapat %}
+            <tr>
+                <td>{{ rapat.datetime }}</td>
+                <td>{{ rapat.manajer_tim_a }}</td>
+                <td>{{ rapat.manajer_tim_b }}</td>
+                <td>{{ rapat.isi_rapat }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+
+        {% endif %}
+        
+
+
+
+
         
     </div>
 

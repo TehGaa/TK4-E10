@@ -1,0 +1,25 @@
+{% extends 'base.html' %} {% block meta %}
+<title>List Pertandingan Penonton</title>
+{% endblock meta %}
+
+{% block content %}
+<h1>List Pertandingan</h1>
+
+<table class="table table-striped p-2">
+    <tr>
+        <th>Tim_Bertanding</th>
+        <th>Stadium</th>
+        <th>Tanggal Mulai</th>
+        <th>Tanggal Selesai</th>
+    </tr>
+    {% for info in pertandingans %}
+    <tr>
+        <td>{{ info.tim_bertanding }}</td>
+        <td>{{ info.nama }}</td>
+        <td>{{ info.start_datetime }}</td>
+        <td>{{ info.end_datetime }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock content %}

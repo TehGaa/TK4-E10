@@ -39,10 +39,10 @@
             <a class="nav-link" href="#">Peminjaman Stadium</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">List Pertandingan</a>
+            <a class="nav-link" href="{% url 'krem:list_pertandingan_manajer' %}">List Pertandingan</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">History Rapat</a>
+            <a class="nav-link" href="{% url 'krem:history_rapat' %}">History Rapat</a>
           </li> 
 
           {% endif %}
@@ -53,7 +53,7 @@
             <a class="nav-link" href="{% url 'krem:pembelian_tiket' %}">Pembelian Tiket</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">List Pertandingan</a>
+            <a class="nav-link" href="{% url 'krem:list_pertandingan_penonton' %}">List Pertandingan</a>
           </li> 
 
           {% endif %}
