@@ -58,7 +58,7 @@
     var url_create = "{% url 'hijau:insert-pemain-into-tim' %}"
     function addPemain(id_pemain){
         $.ajax({
-            method: "PUT",
+            method: "POST",
             contentType: "application/json",
             url: url_create,
             headers:{

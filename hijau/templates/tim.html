@@ -75,7 +75,7 @@
 
     function captainButton(idPemain){
         $.ajax({
-            method: "PUT",
+            method: "POST",
             url: url_update_captain,
             headers:{
                 'X-CSRFToken': csrf
@@ -109,7 +109,7 @@
 
     function deleteButtonForPelatih(idPelatih){
         $.ajax({
-            method: "PUT",
+            method: "POST",
             url: url_delete_pelatih,
             headers:{
                 'X-CSRFToken': csrf

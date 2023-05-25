@@ -58,7 +58,7 @@
     var url_insert_pelatih_into_tim = "{% url 'hijau:insert-pelatih-into-tim' %}"
     function addPelatih(id_pelatih){
         $.ajax({
-            method: "PUT",
+            method: "POST",
             contentType: "application/json",
             url: url_insert_pelatih_into_tim,
             headers:{
@@ -69,7 +69,7 @@
             },
             success: function(data){
                 alert(data)
-                window.location.reload()
+                window.location.reload
             }
         })
     }
