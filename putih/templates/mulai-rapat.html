@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Peminjaman Stadium{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1 class="mb-4">PILIH PERTANDINGAN</h1>
+
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">Tim Bertanding</th>
+          <th scope="col">Stadium</th>
+          <th scope="col">Tanggal dan Waktu</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for pertandingan in pertandingan_list %}
+        <tr>
+          <td>{{ pertandingan.1 }} vs {{ pertandingan.2 }}</td>
+          <td>{{ pertandingan.5 }}</td>
+          <td>{{ pertandingan.3|date:"j F Y" }} {{ pertandingan.3|time:"H:i" }} - {{ pertandingan.4|date:"j F Y" }} {{ pertandingan.4|time:"H:i" }}</td>
+          <td><a href="{% url 'pink:mulai_rapat_id' pertandingan.0%}">Mulai Rapat</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

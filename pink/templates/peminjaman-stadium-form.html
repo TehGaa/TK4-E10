@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Peminjaman Stadium{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1 class="mb-4">PEMINJAMAN STADIUM</h1>
+
+  <form id="peminjaman-form">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="stadium" class="form-label">Stadium:</label>
+      <select id="stadium" name="stadium" class="form-select">
+        {% for stadium in stadium_list %}
+        <option value="{{ stadium.0 }}">{{ stadium.1 }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="start_date" class="form-label">Start Date:</label>
+      <input type="date" id="start_date" name="start_date" class="form-control">
+    </div>
+
+    <div class="mb-3">
+      <label for="end_date" class="form-label">End Date:</label>
+      <input type="date" id="end_date" name="end_date" class="form-control">
+    </div>
+
+    <button type="button" id="submit-btn" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  var csrf = "{{csrf_token}}"
+  $(document).ready(function() {
+    $('#submit-btn').click(function() {
+      var formData = $('#peminjaman-form').serialize();
+
+      $.ajax({
+        url: "{% url 'pink:tambah_peminjaman_stadium' %}",
+        type: "POST",
+        headers: {
+                    "X-CSRFToken": csrf
+                },
+        data: formData,
+        success: function(response) {
+          window.location.href =   "{% url 'pink:pinjam_stadium' %}"
+        },
+        error: function(xhr, errmsg, err) {
+          // Handle the error response here
+          console.log(xhr.status + ": " + xhr.responseText);
+          window.alert("Sudah ada peminjaman di stadium tersebut pada tanggal yang dipilih")
+          // You can display an error message or perform any other error handling
+        }
+      });
+    });
+  });
+</script>
+{% endblock %}
