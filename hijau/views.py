@@ -138,7 +138,7 @@ def delete_pemain(request):
         id_pemain = payload.get('id_pemain')
         tim = get_tim_from_manajer(request.COOKIES.get('id_role'))
         try:
-            cur.execute("UPDATE PEMAIN SET nama_tim = %s WHERE id_pemain=%s",[tim[0]['nama_tim'],id_pemain, ])
+            cur.execute("UPDATE PEMAIN SET nama_tim = NULL WHERE id_pemain=%s",[tim[0]['id_pemain'], ])
             conn.commit()
         except Exception as e:
             conn.rollback()
