@@ -40,22 +40,22 @@
             <a class="nav-link" href="#">Peminjaman Stadium</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">List Pertandingan</a>
+            <a class="nav-link" href="{% url 'krem:list_pertandingan_manajer' %}">List Pertandingan</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">History Rapat</a>
-          </li>
+            <a class="nav-link" href="{% url 'krem:history_rapat' %}">History Rapat</a>
+          </li> 
 
           {% endif %}
 
           {% if request.COOKIES.role == "penonton" %}
 
           <li class="nav-item">
-            <a class="nav-link" href="#">Pembelian Tiket</a>
+            <a class="nav-link" href="{% url 'krem:pembelian_tiket' %}">Pembelian Tiket</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">List Pertandingan</a>
-          </li>
+            <a class="nav-link" href="{% url 'krem:list_pertandingan_penonton' %}">List Pertandingan</a>
+          </li> 
 
           {% endif %}
 
@@ -82,8 +82,8 @@
   </header>
 
   {% block content %}
-
   {% endblock content %}
+
 </body>
 
 </html>

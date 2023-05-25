@@ -33,9 +33,71 @@ def dashboard(request):
     if 'role' in request.COOKIES and 'username' in request.COOKIES:
         cur.execute(query)
         info_user = cur.fetchall()
-        print(info_user)
-        json_format(info_user)
-        context = {k: v for d in info_user for k, v in d.items()}
+
+        info_dashboard=[]
+
+        if (request.COOKIES.get('role') == 'penonton'):
+
+            query=f"""
+            select jenis_tiket, start_datetime, end_datetime, STRING_AGG(nama_tim, ' vs ') as tim_bertanding, s.nama 
+            from pembelian_tiket as pt 
+            inner join tim_pertandingan as tp on pt.id_pertandingan=tp.id_pertandingan -- add a dot here
+            inner join pertandingan as p on tp.id_pertandingan=p.id_pertandingan -- add a dot here
+            inner join stadium as s on p.stadium=s.id_stadium -- change stadium to s
+            where id_penonton='{request.COOKIES.get('id_role')}'
+            group by nomor_receipt, s.id_stadium, p.id_pertandingan
+            order by start_datetime
+            """
+            cur.execute(query)
+            info_dashboard = cur.fetchall()
+
+            context = {
+                'user': info_user,
+                'dashboard': info_dashboard
+            }
+
+            
+
+        if (request.COOKIES.get('role') == 'manajer'):
+
+            query=f"""
+            select * from manajer natural join 
+            tim_manajer where id_manajer='{request.COOKIES.get('id_role')}';
+            """
+            cur.execute(query)
+            info_tim = cur.fetchall()
+            pemain_tim = []
+
+            if(info_tim): 
+                query=f"""
+                select * from pemain where 
+                nama_tim='{info_tim[0].get('nama_tim')}'
+                """
+                cur.execute(query)
+                pemain_tim = cur.fetchall()
+            
+
+            
+
+            context = {
+                'user': info_user,
+                'info_tim': info_tim,
+                'pemain_tim': pemain_tim,
+            }
+
+
+
+        if (request.COOKIES.get('role') == 'panitia'):
+
+            query=f"""
+            select * from rapat
+            where perwakilan_panitia='{request.COOKIES.get('id_role')}';
+            """
+            cur.execute(query)
+            info_rapat = cur.fetchall()
+        
+            context = {'user' : info_user,
+                    'info_rapat': info_rapat}
 
         print(context)
         
@@ -143,6 +205,8 @@ def logout(request):
     response.delete_cookie('username')
     response.delete_cookie('role')
     response.delete_cookie('id_role')
+    if 'id_pertandingan' in request.COOKIES:
+        response.delete_cookie('id_pertandingan')
     return response
 
 def check_user_based_on_role(username, password, role):

@@ -1,0 +1,23 @@
+{% extends 'base.html' %} {% block meta %}
+<title>Pembelian Tiket</title>
+{% endblock meta %}
+
+{% block content %}
+<h1>PILIH STADIUM</h1>
+
+<form method="POST" action="pembelian_tiket2">
+    {% csrf_token %}
+    <label for="stadium">Stadium: </label>
+    <select name="stadium" id="stadium">    
+    {% for stadium in stadiums %}
+        <option value="{{ stadium.id_stadium }}">{{ stadium.nama }}</option>
+    {% endfor %}
+    </select>
+
+    <label for="tanggal">Tanggal</label>
+    <input type="date" name="tanggal" id="tanggal" min="2023-05-08" max="2023-05-15">
+
+    <button type="submit" class="btn btn-primary">NEXT</button>
+
+</form>
+{% endblock content %}
