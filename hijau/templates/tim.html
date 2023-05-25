@@ -80,6 +80,7 @@
                 'X-CSRFToken': csrf
             },
             data: {
+                'csrfmiddlewaretoken': csrf,
                 'id_pemain': idPemain,
             },
             success: function(data){
@@ -97,6 +98,7 @@
                 'X-CSRFToken': csrf
             },
             data:{
+                'csrfmiddlewaretoken': csrf,
                 'id_pemain': idPemain
             },
             success: function(data){
@@ -114,6 +116,7 @@
                 'X-CSRFToken': csrf
             },
             data:{
+                'csrfmiddlewaretoken': csrf,
                 'id_pelatih': idPelatih
             },
             success: function(data){

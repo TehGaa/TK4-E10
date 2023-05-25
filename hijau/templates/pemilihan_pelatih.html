@@ -64,6 +64,7 @@
                 "X-CSRFToken": csrf
             },
             data:{
+                'csrfmiddlewaretoken': csrf,
                 "id_pelatih": id_pelatih
             },
             success: function(data){

@@ -64,6 +64,7 @@
                 "X-CSRFToken": csrf
             },
             data:{
+                'csrfmiddlewaretoken': csrf,
                 "id_pemain": id_pemain
             },
             success: function(data){
