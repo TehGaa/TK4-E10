@@ -111,7 +111,7 @@ def data_list_waktu(request):
 
 def dropdown_stadium(request):
             query = """
-                SELECT S.Nama
+                SELECT S.Nama, S.id_stadium
                 FROM Stadium AS S;
             """
 
@@ -122,15 +122,6 @@ def dropdown_stadium(request):
             
             return render(request, 'dropdown_stadium.html', response)
 
-# ini yg FROM DROPWODSAN
-def dropdown_stadium2(request):
-    if (request.method == "POST"):
-        id_stadium = request.POST.get("stadium")
-        tanggal = request.POST.get("tanggal")
-        print(id_stadium)
-        print(tanggal)
-
-
 def create_pertandingan(request):
     if (request.method == "POST"):
         nama_stadium = request.POST.get("stadium")
@@ -138,15 +129,15 @@ def create_pertandingan(request):
         print('haha')
         print(nama_stadium)
         print(tanggal)
-        # request.session['nama_stadium'] = nama_stadium
-        # request.session['tanggal'] = tanggal
+        request.session['nama_stadium'] = nama_stadium
+        request.session['tanggal'] = tanggal
 
         query_wasit = """
         SELECT nama_depan||' '||nama_belakang as nama, w.id_wasit
         FROM wasit as w, non_pemain
         WHERE NON_PEMAIN.id = w.id_wasit;
         """
-        query_tim = f"select nama_tim from tim_manajer natural join peminjaman inner join stadium on peminjaman.id_stadium=stadium.id_stadium where nama='{nama_stadium}';"
+        query_tim = f"select nama_tim from tim_manajer natural join peminjaman inner join stadium on peminjaman.id_stadium=stadium.id_stadium where stadium.id_stadium='{nama_stadium}';"
 
         # query_tim = f"select nama_tim from tim;"
         cur.execute(query_wasit)
@@ -163,52 +154,53 @@ def create_pertandingan(request):
             
 # INI BIKIN CREATE REALLL
 
-# def submit_create_pertandingan(request):
-#     if (request.method == "POST"):
-#         wasitutama = request.POST.get("wasitutama")
-#         wasitpembantu1 = request.POST.get("wasitpembantu1")
-#         wasitpembantu2 = request.POST.get("wasitpembantu2")
-#         wasitcadangan = request.POST.get("wasitcadangan")
-#         tim1 = request.POST.get("tim1")
-#         tim2 = request.POST.get("tim2")
+def submit_create_pertandingan(request):
+    if (request.method == "POST"):
+        wasitutama = request.POST.get("wasitutama")
+        wasitpembantu1 = request.POST.get("wasitpembantu1")
+        wasitpembantu2 = request.POST.get("wasitpembantu2")
+        wasitcadangan = request.POST.get("wasitcadangan")
+        tim1 = request.POST.get("tim1")
+        tim2 = request.POST.get("tim2")
 
-#         stadium = request.session.get('nama_stadium')
-#         print(stadium)
-#         tanggal = request.session.get('tanggal')
+        print(request.session)
+        stadium = request.session.get('nama_stadium')
+        tanggal = request.session.get('tanggal')
+        print(stadium)
 
-#         try:
-#             psycopg2.extras.register_uuid()
+        try:
+            psycopg2.extras.register_uuid()
 
-#             uuid_for_id_pertandingan = generate_uuid()
+            uuid_for_id_pertandingan = generate_uuid()
+            print(uuid_for_id_pertandingan)
+            print(stadium)
 
-#             cur.execute("INSERT INTO PERTANDINGAN VALUES(%s, %s, %s, %s)",
-#                         [uuid_for_id_pertandingan, tanggal, tanggal, stadium])
-#             cur.execute("INSERT INTO TIM_PERTANDINGAN VALUES(%s, %s, %s)", [tim1, uuid_for_id_pertandingan, 0])
-#             cur.execute("INSERT INTO TIM_PERTANDINGAN VALUES(%s, %s, %s)", [tim2, uuid_for_id_pertandingan, 0])
-#             cur.execute("INSERT INTO WASIT_BERTUGAS VALUES(%s, %s, %s)", [wasitutama, uuid_for_id_pertandingan, 'utama'])
-#             cur.execute("INSERT INTO WASIT_BERTUGAS VALUES(%s, %s, %s)", [wasitpembantu1, uuid_for_id_pertandingan, 'pembantu'])
-#             cur.execute("INSERT INTO WASIT_BERTUGAS VALUES(%s, %s, %s)", [wasitpembantu2, uuid_for_id_pertandingan, 'pembantu'])
-#             cur.execute("INSERT INTO WASIT_BERTUGAS VALUES(%s, %s, %s)", [wasitcadangan, uuid_for_id_pertandingan, 'cadangan'])
-#             conn.commit()
+            cur.execute("INSERT INTO PERTANDINGAN VALUES(%s, %s, %s, %s)",
+                        [uuid_for_id_pertandingan, tanggal, tanggal, stadium])
+            cur.execute("INSERT INTO TIM_PERTANDINGAN VALUES(%s, %s, %s)", [tim1, uuid_for_id_pertandingan, 0])
+            cur.execute("INSERT INTO TIM_PERTANDINGAN VALUES(%s, %s, %s)", [tim2, uuid_for_id_pertandingan, 0])
+            cur.execute("INSERT INTO WASIT_BERTUGAS VALUES(%s, %s, %s)", [wasitutama, uuid_for_id_pertandingan, 'utama'])
+            cur.execute("INSERT INTO WASIT_BERTUGAS VALUES(%s, %s, %s)", [wasitpembantu1, uuid_for_id_pertandingan, 'pembantu'])
+            cur.execute("INSERT INTO WASIT_BERTUGAS VALUES(%s, %s, %s)", [wasitpembantu2, uuid_for_id_pertandingan, 'pembantu'])
+            cur.execute("INSERT INTO WASIT_BERTUGAS VALUES(%s, %s, %s)", [wasitcadangan, uuid_for_id_pertandingan, 'cadangan'])
+            conn.commit()
 
-#             return redirect(reverse('biru:data_list_pertandingan'))
-#         except Exception as e:
-#             conn.rollback()
-#             return HttpResponse(e)
+            return redirect(reverse('biru:data_list_pertandingan'))
+        except Exception as e:
+            conn.rollback()
+            return HttpResponse(e)
     
-#     return HttpResponseNotAllowed("Invalid request method. Please use supported request method.")
+    return HttpResponseNotAllowed("Invalid request method. Please use supported request method.")
 
 # INI GENERATE ID
 
 def generate_uuid():
     while (True):
         generated_uuid = uuid.uuid4()
-        cur.execute("SELECT * FROM PERTANDINGAN WHERE id = %s", (generated_uuid,))
+        cur.execute("SELECT * FROM PERTANDINGAN WHERE id_pertandingan = %s", (generated_uuid,))
         lst_pertandingan = cur.fetchall()
         if (lst_pertandingan == []):
             return generated_uuid
-        
-
 
 # II KSAK LITAAAAAAAAAA
 
@@ -218,9 +210,13 @@ def delete_pertandingan(request):
 
 def delete_tim_pertandingan(data):
     query = f"""
+    DELETE FROM rapat
+    WHERE id_pertandingan = '{data['id_pertandingan']}';
     DELETE FROM tim_pertandingan
     WHERE id_pertandingan = '{data['id_pertandingan']}';
-    DELETE FROM pertandingan
+    DELETE FROM pembelian_tiket
+    WHERE id_pertandingan = '{data['id_pertandingan']}';
+    DELETE FROM wasit_bertugas
     WHERE id_pertandingan = '{data['id_pertandingan']}';
     DELETE FROM peristiwa
     WHERE id_pertandingan = '{data['id_pertandingan']}';
@@ -228,7 +224,7 @@ def delete_tim_pertandingan(data):
     WHERE id_pertandingan = '{data['id_pertandingan']}';
     DELETE FROM pembelian_tiket
     WHERE id_pertandingan = '{data['id_pertandingan']}';
-    DELETE FROM rapat
+    DELETE FROM pertandingan
     WHERE id_pertandingan = '{data['id_pertandingan']}';
     """
     cur.execute(query)

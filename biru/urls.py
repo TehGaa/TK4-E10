@@ -9,5 +9,6 @@ urlpatterns = [
     path('dropdown_stadium', dropdown_stadium, name='dropdown_stadium'),
     path('data_list_waktu', data_list_waktu, name='data_list_waktu'),
     path('create_pertandingan', create_pertandingan, name='create_pertandingan'),
-    path('delete', delete_pertandingan, name="delete_pertandingan")
+    path('delete', delete_pertandingan, name="delete_pertandingan"),
+    path('submit_create_pertandingan', submit_create_pertandingan, name='submit_create_pertandingan'),
 ]
