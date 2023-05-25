@@ -24,42 +24,6 @@ conn = psycopg2.connect(database=settings.DATABASE_NAME,
 
 cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
-# @login_required_as_role('manajer')
-# def home(request):
-#     if (request.method == 'POST'):
-#         nama_tim = request.POST.get('nama-tim')
-#         nama_univ = request.POST.get('nama-univ')
-        
-#         cur.execute("SELECT * FROM TIM WHERE nama_tim = %s AND nama_univ = %s", [nama_tim, nama_univ, ])
-#         is_registered = cur.fetchall() == []
-        
-#         if (is_registered):
-#             return f"Not Registered"
-        
-#         response = HttpResponseRedirect(reverse('hijau:show_tim'))
-        
-#         return 
-#     return render(request, 'mengelola_tim.html')
-
-# @login_required_as_role('manajer')
-# def create_tim(request):
-#     if (request.method == "POST"):
-#         nama_tim = request.POST.get('nama-tim')
-#         nama_univ = request.POST.get('nama_univ')
-#         try:
-#             cur.execute('INSERT INTO TIM VALUES(%s, %s)', [nama_tim, nama_univ, ])
-#             conn.commit()
-#             return f'insert tim {nama_tim} with univ name {nama_univ} succeded'
-#         except Exception as e:
-#             conn.rollback()
-#             return HttpResponse(e)
-    
-#     return HttpResponseNotAllowed("Invalid request method. Please use supported request method.")
-
-# @login_required_as_role('manajer')
-# def show_tim(request):
-#     pass
-
 def fetch(cursor):
     columns = [col[0] for col in cursor.description]
     return [dict(zip(columns, row)) for row in cursor.fetchall()]
@@ -232,4 +196,120 @@ def delete_tim_pertandingan(data):
 
 # INI MAU COBA UPDATEEEEEEEEE
 
+def update_dropdown_stadium(request):
+    if (request.method == "POST"):
+        id_pertandingan = request.POST.get("id_pertandingan")
+        request.session['id_pertandingan'] = id_pertandingan
+                
+        query_selected = f"""
+            SELECT S.Nama, S.id_stadium, T.id_pertandingan, p.Start_Datetime, p.End_Datetime
+            FROM Stadium AS S, tim_pertandingan as t, pertandingan as p
+            WHERE S.id_stadium=p.stadium AND p.id_pertandingan='{id_pertandingan}';
+        """
+        query_all = f"""
+                SELECT S.Nama, S.id_stadium
+                FROM Stadium AS S;
+            """
+        cur.execute(query_selected)
+        data_selected = fetch(cur)
+        
+        cur.execute(query_all)
+        data_all = fetch(cur)
+        response = {'data_all': data_all, 'data_selected': data_selected,}
+        return render(request, 'update_dropdown_stadium.html', response)
+    
+def update_create_pertandingan(request):
+    if (request.method == "POST"):
+        nama_stadium = request.POST.get("stadium")
+        tanggal = request.POST.get("tanggal")
+        print('haha')
+        print(nama_stadium)
+        print(tanggal)
+        request.session['nama_stadium'] = nama_stadium
+        request.session['tanggal'] = tanggal
+        id_pertandingan = request.session.get('id_pertandingan')
 
+        query_wasit = """
+        SELECT nama_depan||' '||nama_belakang as nama, w.id_wasit
+        FROM wasit as w, non_pemain
+        WHERE NON_PEMAIN.id = w.id_wasit;
+        """
+        query_tim = f"select nama_tim from tim_manajer natural join peminjaman inner join stadium on peminjaman.id_stadium=stadium.id_stadium where stadium.id_stadium='{nama_stadium}';"
+
+        # qwasitutama = f"""
+        # SELECT DISTINCT n.nama_depan||' '||n.nama_belakang as nama, w.id_wasit
+        # FROM wasit as w, non_pemain as n, pertandingan as p, wasit_bertugas as t
+        # WHERE (n.id = w.id_wasit AND T.id_wasit=w.id_wasit 
+        # AND n.id = T.id_wasit AND p.id_pertandingan=T.id_pertandingan 
+        # AND p.id_pertandingan='{id_pertandingan}' 
+        # AND t.posisi_wasit='utama');
+        # """
+        # qwasitpembantu= f"""
+        # SELECT DISTINCT n.nama_depan||' '||n.nama_belakang as nama, w.id_wasit
+        # FROM wasit as w, non_pemain as n, pertandingan as p, wasit_bertugas as t
+        # WHERE (n.id = w.id_wasit AND T.id_wasit=w.id_wasit 
+        # AND n.id = T.id_wasit AND p.id_pertandingan=T.id_pertandingan 
+        # AND p.id_pertandingan='{id_pertandingan}' 
+        # AND t.posisi_wasit='pembantu');
+        # """
+        # qwasitcadangan = f"""
+        # SELECT DISTINCT n.nama_depan||' '||n.nama_belakang as nama, w.id_wasit
+        # FROM wasit as w, non_pemain as n, pertandingan as p, wasit_bertugas as t
+        # WHERE (n.id = w.id_wasit AND T.id_wasit=w.id_wasit 
+        # AND n.id = T.id_wasit AND p.id_pertandingan=T.id_pertandingan 
+        # AND p.id_pertandingan='{id_pertandingan}' 
+        # AND t.posisi_wasit='cadangan');
+        # """
+        # qtim = f"select nama_tim from tim_manajer natural join peminjaman inner join stadium on peminjaman.id_stadium=stadium.id_stadium where stadium.id_stadium='{nama_stadium}';"
+
+        # query_tim = f"select nama_tim from tim;"
+        cur.execute(query_wasit)
+        data_w = fetch(cur)
+
+        cur.execute(query_tim)
+        data_t = fetch(cur)
+        # print(data_t)
+
+        response = {'data_w': data_w, 'data_t': data_t, 'nama stadium': nama_stadium}
+        # print(response)
+        # print(nama_stadium)
+        return render(request, 'update_create_pertandingan.html', response)
+
+def update_submit_create_pertandingan(request):
+    if (request.method == "POST"):
+        wasitutama = request.POST.get("wasitutama")
+        wasitpembantu1 = request.POST.get("wasitpembantu1")
+        wasitpembantu2 = request.POST.get("wasitpembantu2")
+        wasitcadangan = request.POST.get("wasitcadangan")
+        tim1 = request.POST.get("tim1")
+        tim2 = request.POST.get("tim2")
+
+        print(request.session)
+        stadium = request.session.get('nama_stadium')
+        tanggal = request.session.get('tanggal')
+        print(stadium)
+        id_pertandingan = request.session.get('id_pertandingan')
+
+        try:
+            cur.execute("UPDATE WASIT_BERTUGAS SET id_wasit = %s WHERE id_pertandingan = %s AND Posisi_Wasit = %s",
+                        [wasitutama, id_pertandingan, 'utama'])
+            cur.execute("UPDATE WASIT_BERTUGAS SET id_wasit = %s WHERE id_pertandingan = %s AND Posisi_Wasit = %s",
+                        [wasitpembantu1, id_pertandingan, 'pembantu'])
+            cur.execute("UPDATE WASIT_BERTUGAS SET id_wasit = %s WHERE id_pertandingan = %s AND Posisi_Wasit = %s",
+                        [wasitpembantu2, id_pertandingan, 'pembantu'])
+            cur.execute("UPDATE WASIT_BERTUGAS SET id_wasit = %s WHERE id_pertandingan = %s AND Posisi_Wasit = %s",
+                        [wasitcadangan, id_pertandingan, 'cadangan'])
+            cur.execute("UPDATE PERTANDINGAN SET Start_Datetime = %s, End_Datetime = %s, stadium = %s WHERE id_pertandingan = %s",
+            [tanggal, tanggal, stadium, id_pertandingan])
+            cur.execute("UPDATE TIM_PERTANDINGAN SET Nama_Tim = %s WHERE id_pertandingan = %s",
+                        [tim2, id_pertandingan])
+            cur.execute("UPDATE TIM_PERTANDINGAN SET Nama_Tim = %s WHERE id_pertandingan = %s",
+                        [tim1, id_pertandingan])
+            conn.commit()
+
+            return redirect(reverse('biru:data_list_pertandingan'))
+        except Exception as e:
+            conn.rollback()
+            return HttpResponse(e)
+    
+    return HttpResponseNotAllowed("Invalid request method. Please use supported request method.")

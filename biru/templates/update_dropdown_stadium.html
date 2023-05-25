@@ -42,19 +42,36 @@
   </header>
 
   <h2 style="text-align: center;">PEMBUATAN PERTANDINGAN</h2>
-	<form method="POST" action="create_pertandingan">
+  <form method="POST" action="update_create_pertandingan">
     {% csrf_token %}
     <label for="stadium">Stadium: </label>
     <select name="stadium" id="stadium">
-    {% for item in data %}
-        <option value="{{ item.nama }}">{{ item.nama }}</option>
-    {% endfor %}
+      <option selected value="{{ data_selected.0.id_stadium }}">{{ data_selected.0.nama }}</option>
+      {% for item in data_all %}
+        <option value="{{ item.id_stadium }}" data-start-datetime="{{ item.start_datetime }}">{{ item.nama }}</option>
+      {% endfor %}
     </select>
     <br>
-    <label for="tanggal">Tanggal</label>
+    <label for="tanggal">Tanggal:</label>
     <input type="date" name="tanggal" id="tanggal">
     <br>
+    <p id="selected-start-datetime"></p> <!-- Element to display the selected start datetime -->
+    <br>
     <button type="submit" class="btn btn-primary">NEXT</button>
+  </form>
+  
+  <script>
+    // JavaScript code to display the selected start datetime
+    const stadiumSelect = document.getElementById('stadium');
+    const selectedStartDatetime = document.getElementById('selected-start-datetime');
+  
+    stadiumSelect.addEventListener('change', function() {
+      const selectedOption = stadiumSelect.options[stadiumSelect.selectedIndex];
+      const startDatetime = selectedOption.getAttribute('data-start-datetime');
+      selectedStartDatetime.textContent = startDatetime;
+    });
+  </script>
+  
 
 </form>
 </body>

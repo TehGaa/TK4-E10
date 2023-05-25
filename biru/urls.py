@@ -11,4 +11,7 @@ urlpatterns = [
     path('create_pertandingan', create_pertandingan, name='create_pertandingan'),
     path('delete', delete_pertandingan, name="delete_pertandingan"),
     path('submit_create_pertandingan', submit_create_pertandingan, name='submit_create_pertandingan'),
+    path('update_dropdown_stadium', update_dropdown_stadium, name='update_dropdown_stadium'),
+    path('update_create_pertandingan', update_create_pertandingan, name='update_create_pertandingan'),
+    path('update_submit_create_pertandingan', update_submit_create_pertandingan, name='update_submit_create_pertandingan'),
 ]

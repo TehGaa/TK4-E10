@@ -19,7 +19,11 @@
         <tr>
           <td>{{ item.nama_tim_a }} VS {{ item.nama_tim_b }}</td>
           <td>
-            <a href="#">[update]</a>
+            <form action = "{% url 'biru:update_dropdown_stadium' %}" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="id_pertandingan" value="{{ item.id_pertandingan }}">
+              <button class="siruco-button" name='details' type="submit">Update</button>
+            </form>
             <form action = "{% url 'biru:delete_pertandingan' %}" method="POST">
               {% csrf_token %}
               <input type="hidden" name="id_pertandingan" value="{{ item.id_pertandingan }}">
@@ -40,8 +44,16 @@
         <tr>
           <td>{{ item.nama_tim_a }} VS {{ item.nama_tim_b }}</td>
           <td>
-            <a href="#">[update]</a>
-            <a href="#">[delete]</a>
+            <form action = "{% url 'biru:update_dropdown_stadium' %}" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="id_pertandingan" value="{{ item.id_pertandingan }}">
+              <button class="siruco-button" name='details' type="submit">Update</button>
+            </form>
+            <form action = "{% url 'biru:delete_pertandingan' %}" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="id_pertandingan" value="{{ item.id_pertandingan }}">
+              <button class="siruco-button" name='details' type="submit">Delete</button>
+            </form>
           </td>
         </tr>
         {% endfor %}
@@ -70,7 +82,7 @@
         <tr>
           <td>? VS ?</td>
           <td>
-            <a href="#">[add]</a>
+            <a href="dropdown_stadium">[add]</a>
           </td>
         </tr>
       </tbody>

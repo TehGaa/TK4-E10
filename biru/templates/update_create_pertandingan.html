@@ -42,19 +42,19 @@
   </header>
 
   <h2 style="text-align: center;">BUAT PERTANDINGAN</h2>
-	<form method="POST" action="data_list_pertandingan">
+	<form method="POST" action="update_submit_create_pertandingan">
     {% csrf_token %}
     <label for="wasitutama">Pilih Wasit Utama: </label>
     <select name="wasitutama" id="wasitutama">
     {% for item in data_w %}
-        <option value="{{ item.nama }}">{{ item.nama }}</option>
+        <option value="{{ item.id_wasit }}">{{ item.nama }}</option>
     {% endfor %}
     </select>
     <br>
     <label for="wasitpembantu1">Pilih Wasit Pembantu/Hakim Garis 1: </label>
     <select name="wasitpembantu1" id="wasitpembantu1">
     {% for item in data_w %}
-      <option value="{{ item.nama }}">{{ item.nama }}</option>
+      <option value="{{ item.id_wasit }}">{{ item.nama }}</option>
     {% endfor %}
     </select>
     <br>
@@ -62,7 +62,7 @@
     <label for="wasitpembantu2">Pilih Wasit Pembantu/Hakim Garis 2: </label>
     <select name="wasitpembantu2" id="wasitpembantu2">
     {% for item in data_w %}
-      <option value="{{ item.nama }}">{{ item.nama }}</option>
+      <option value="{{ item.id_wasit }}">{{ item.nama }}</option>
     {% endfor %}
     </select>
     <br>
@@ -70,7 +70,7 @@
     <label for="wasitcadangan">Pilih Wasit Cadangan: </label>
     <select name="wasitcadangan" id="wasitcadangan">
     {% for item in data_w %}
-      <option value="{{ item.nama }}">{{ item.nama }}</option>
+      <option value="{{ item.id_wasit }}">{{ item.nama }}</option>
     {% endfor %}
     </select>
     <br>
